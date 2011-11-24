@@ -1,0 +1,19 @@
+Drosera\UserBundle\Entity\User:
+    properties:
+        username:
+            - NotBlank: { message: "Zadejte prosím uživatelské jméno." }
+        firstname:
+            - NotBlank: { message: "Zadejte prosím jméno." }
+        lastname:
+            - NotBlank: { message: "Zadejte prosím příjmení." }
+        email:
+            - NotBlank: { message: "Zadejte prosím e-mailovou adresu." }
+            - Email: { message: "Zadejte prosím správnou e-mailovou adresu." }
+        plainPassword:
+            - NotBlank: { message: "Zadejte prosím heslo." }
+            - MinLength: { limit: 6, message: "Zadané heslo je příliš krátké."} 
+    getters:
+        passwordConfirm:
+            - "True": { message: "Hesla se neshodují." }
+
+                    

@@ -1,0 +1,6 @@
+drosera_user_security:
+    resource: "@DroseraUserBundle/Resources/config/routing/security.yml"
+    
+drosera_user_user:
+    resource: "@DroseraUserBundle/Resources/config/routing/user.yml"
+    prefix:   /user

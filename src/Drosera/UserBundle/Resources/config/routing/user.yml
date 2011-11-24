@@ -1,0 +1,11 @@
+drosera_user_admin_user_list:
+    pattern:  /list
+    defaults: { _controller: DroseraUserBundle:User:list }
+    
+drosera_user_admin_user_create:
+    pattern:  /create
+    defaults: { _controller: DroseraUserBundle:User:create }
+
+drosera_user_admin_user_index:
+    pattern:  /
+    defaults: { _controller: DroseraUserBundle:User:list }

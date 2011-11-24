@@ -1,0 +1,3 @@
+drosera_admin_homepage:
+    pattern:  /
+    defaults: { _controller: DroseraAdminBundle:Dashboard:index }

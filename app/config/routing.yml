@@ -1,3 +1,17 @@
+drosera_user_admin:
+    resource: "@DroseraUserBundle/Resources/config/routing.admin.yml"
+    prefix:   /admin
+    
+drosera_user:
+    resource: "@DroseraUserBundle/Resources/config/routing.yml"
+
+drosera_admin:
+    resource: "@DroseraAdminBundle/Resources/config/routing.yml"
+    prefix:   /admin
+    
+logout:
+    pattern:   /logout
+
 # Internal routing configuration to handle ESI
 #_internal:
 #   resource: "@FrameworkBundle/Resources/config/routing/internal.xml"

@@ -1,0 +1,26 @@
+<html>
+<head>
+</head>
+<body>
+
+
+{% if error %}
+    <div>{{ error.message }}</div>
+{% endif %}
+
+<form action="{{ path('drosera_user_login_check') }}" method="post">
+    <label for="username">Login:</label>
+    <input type="text" id="username" name="_username" value="{{ last_username }}" />
+
+    <label for="password">Heslo:</label>
+    <input type="password" id="password" name="_password" />
+
+    {#
+        If you want to control the URL the user is redirected to on success (more details below)
+        <input type="hidden" name="_target_path" value="/account" />
+    #}
+
+    <input type="submit" value="Přihlásit" name="login" />
+</form>
+</body>
+</html>

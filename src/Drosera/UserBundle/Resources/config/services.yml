@@ -1,0 +1,12 @@
+parameters:
+    drosera_user.manager.user_manager.class: Drosera\UserBundle\Manager\UserManager
+    drosera_user.entity.user.class: Drosera\UserBundle\Entity\User
+
+services: 
+    drosera_user.user_repository:
+        parent: drosera_admin.repo
+        arguments: [%drosera_user.entity.user.class%]
+
+    drosera_user.user_manager:
+        class: %drosera_user.manager.user_manager.class%
+        arguments: [@drosera_user.user_repository, @security.encoder_factory, %drosera_user.entity.user.class%]

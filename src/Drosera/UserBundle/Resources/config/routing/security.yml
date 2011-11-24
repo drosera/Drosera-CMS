@@ -1,0 +1,5 @@
+drosera_user_login:
+    pattern:  /login
+    defaults: { _controller: DroseraUserBundle:Security:login }
+drosera_user_login_check:
+    pattern:   /login_check

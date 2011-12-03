@@ -1,12 +1,19 @@
 parameters:
     drosera_user.manager.user_manager.class: Drosera\UserBundle\Manager\UserManager
     drosera_user.entity.user.class: Drosera\UserBundle\Entity\User
+    drosera_user.validator.unique_username.class: Drosera\UserBundle\Validator\UniqueUsernameValidator
 
 services: 
-    drosera_user.user_repository:
+    drosera_user.repository.user_repository:
         parent: drosera_admin.repo
         arguments: [%drosera_user.entity.user.class%]
 
     drosera_user.user_manager:
         class: %drosera_user.manager.user_manager.class%
-        arguments: [@drosera_user.user_repository, @security.encoder_factory, %drosera_user.entity.user.class%]
+        arguments: [@drosera_user.repository.user_repository, @security.encoder_factory, %drosera_user.entity.user.class%]
+        
+    drosera_user.validator.unique_username:
+       class:      %drosera_user.validator.unique_username.class%
+       arguments: [@drosera_user.user_manager]
+       tags:
+            - { name: validator.constraint_validator, alias: drosera_user.validator.unique_username }

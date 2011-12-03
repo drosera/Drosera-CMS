@@ -1,19 +1,25 @@
+namespaces:
+    validator: Drosera\UserBundle\Validator\
+
 Drosera\UserBundle\Entity\User:
     properties:
         username:
-            - NotBlank: { message: "Zadejte prosím uživatelské jméno." }
+            - NotBlank: { message: "Zadejte prosím uživatelské jméno.", groups: [create, edit] } 
         firstname:
-            - NotBlank: { message: "Zadejte prosím jméno." }
+            - NotBlank: { message: "Zadejte prosím jméno.", groups: [create, edit] }
         lastname:
-            - NotBlank: { message: "Zadejte prosím příjmení." }
+            - NotBlank: { message: "Zadejte prosím příjmení.", groups: [create, edit] }
         email:
-            - NotBlank: { message: "Zadejte prosím e-mailovou adresu." }
-            - Email: { message: "Zadejte prosím správnou e-mailovou adresu." }
+            - NotBlank: { message: "Zadejte prosím e-mailovou adresu.", groups: [create, edit] }
+            - Email: { message: "Zadejte prosím správnou e-mailovou adresu.", groups: [create, edit] }
         plainPassword:
-            - NotBlank: { message: "Zadejte prosím heslo." }
-            - MinLength: { limit: 6, message: "Zadané heslo je příliš krátké."} 
+            - NotBlank: { message: "Zadejte prosím heslo.", groups: [create] }
+            - MinLength: { limit: 6, message: "Zadané heslo je příliš krátké.", groups: [create]} 
     getters:
         passwordConfirm:
-            - "True": { message: "Hesla se neshodují." }
+            - "True": { message: "Hesla se neshodují.", groups: [create] }
+    constraints:
+        - validator:UniqueUsername: { groups: [create, edit] }
+
 
                     

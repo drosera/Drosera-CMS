@@ -35,6 +35,21 @@ class UserManager implements UserProviderInterface
         $this->userRepository->update($user);
     }
     
+    public function getList()
+    {
+        $criteria = array('time_deleted' => null);
+        return $this->userRepository->findBy($criteria); 
+    }
+    
+    public function getById($id)
+    {
+        if (!$id = intval($id))
+            return null;
+       
+        $criteria = array('id' => $id, 'time_deleted' => null);
+        return $this->userRepository->findOneBy($criteria); 
+    }
+    
     public function updatePassword(UserInterface $user)
     {
         if (0 !== strlen($password = $user->getPlainPassword())) {
@@ -42,6 +57,11 @@ class UserManager implements UserProviderInterface
             $user->setPassword($encoder->encodePassword($password, $user->getSalt()));
             $user->eraseCredentials();
         }
+    }
+    
+    public function validateUniqueUsername(UserInterface $user)
+    {       
+        return $this->userRepository->isUnique($user);
     }
     
     protected function getEncoder(UserInterface $user)

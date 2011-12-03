@@ -5,6 +5,14 @@ drosera_user_admin_user_list:
 drosera_user_admin_user_create:
     pattern:  /create
     defaults: { _controller: DroseraUserBundle:User:create }
+    
+drosera_user_admin_user_edit:
+    pattern:  /edit/{id}
+    defaults: { _controller: DroseraUserBundle:User:edit }
+    
+drosera_user_admin_user_delete:
+    pattern:  /delete/{id}
+    defaults: { _controller: DroseraUserBundle:User:delete }
 
 drosera_user_admin_user_index:
     pattern:  /

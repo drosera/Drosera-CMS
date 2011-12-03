@@ -143,7 +143,20 @@ class User implements UserInterface
 
         return array_unique($roles);
         */
-        return array('ROLE_ADMIN');
+        
+        $roles = array();
+        $groupId = $this->getUserGroup()->getId();
+        
+        switch ($groupId) {
+            case 1:
+                $roles[] = 'ROLE_SUPERADMIN';
+            case 2:
+                $roles[] = 'ROLE_ADMIN';
+            default:
+                $roles[] = 'ROLE_USER';   
+        }
+                    
+        return $roles;
     }
     
     /**
@@ -217,6 +230,30 @@ class User implements UserInterface
         }
         
         return true;
+    }
+    
+    /**
+     * Get fullname
+     *
+     * @return string 
+     */
+    public function getFullname()
+    {
+        $fullname = '';
+        $fullname .= $this->getDegreeFront();
+		
+        if (strlen($fullname))
+			$fullname .= ' ';
+		$fullname .= $this->getFirstname();
+        
+        if (strlen($fullname))
+			$fullname .= ' ';
+		$fullname .= $this->getLastname();
+
+		if ($this->getDegreeBehind())
+			$fullname .= ', ' . $this->getDegreeBehind();
+		
+        return $fullname;
     }
 
     /**

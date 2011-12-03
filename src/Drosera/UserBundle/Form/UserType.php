@@ -11,9 +11,11 @@ use Doctrine\ORM\EntityRepository;
 class UserType extends AbstractType
 {
     protected $loggedUser;
+    protected $validationGroups;
 
-    function __construct(UserInterface $loggedUser) {
+    function __construct($validationGroups, UserInterface $loggedUser) {
         $this->loggedUser = $loggedUser;
+        $this->validationGroups = $validationGroups;
     }
 
     public function buildForm(FormBuilder $builder, array $options)
@@ -25,8 +27,8 @@ class UserType extends AbstractType
         $builder->add('degree_behind', null, array('label' => 'Titul za'));
         $builder->add('email', 'email', array('label' => 'E-mail'));
         $builder->add('telephone', null, array('label' => 'Telefon'));
-        $builder->add('plainPassword', 'password', array('label' => 'Heslo')); 
-        $builder->add('passwordConfirm', 'password', array('label' => 'Potvrzení hesla'));
+        $builder->add('plainPassword', 'password', array('label' => 'Heslo', 'required' => false)); 
+        $builder->add('passwordConfirm', 'password', array('label' => 'Potvrzení hesla', 'required' => false));
         //$builder->add('user_group', null, array('label' => 'Uživatelská skupina'));
         
         $loggedUser = $this->loggedUser;
@@ -42,6 +44,7 @@ class UserType extends AbstractType
     {
         return array(
             'data_class' => 'Drosera\UserBundle\Entity\User',
+            'validation_groups' => $this->validationGroups,
         );
     }   
 

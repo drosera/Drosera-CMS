@@ -1,11 +1,9 @@
 {% extends 'DroseraAdminBundle::layout.html.twig' %}
 
 {% block content %}
-    Create user!
+    <h1>Vytvořit uživatele</h1>
     <form action="{{ path('drosera_user_admin_user_create') }}" method="post" {{ form_enctype(form) }}>
         {{ form_widget(form) }}
         <input type="submit" value="Vyvořit" />
-        <input type="submit" formnovalidate='1' value="NO Vyvořit" />
     </form>
-    {% debug user %}
 {% endblock %}

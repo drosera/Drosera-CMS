@@ -17,7 +17,11 @@
                 <td>{{ user.email }}</td>
                 <td>{{ user.usergroup }}</td>
                 <td><a href="{{ path('drosera_user_admin_user_edit', {'id':user.id}) }}">Upravit</a></td>
-                <td><a href="{{ path('drosera_user_admin_user_delete', {'id':user.id}) }}">Odstranit</a></td>
+                <td>
+                    {% if loggedUser.id != user.id %}
+                        <a href="{{ path('drosera_user_admin_user_delete', {'id':user.id}) }}">Odstranit</a>
+                    {% endif %}    
+                </td>
             </tr>
         {% endfor %}
     </table>

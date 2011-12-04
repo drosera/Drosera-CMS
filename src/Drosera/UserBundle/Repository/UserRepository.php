@@ -18,6 +18,12 @@ class UserRepository extends EntityRepository
         }
     }
     
+    public function remove(UserInterface $user)
+    {
+        $this->_em->remove($user);
+        $this->_em->flush();
+    }
+    
     public function getList($withSuperadmins)
     {          
        // snad se to takhle chova jako eager join

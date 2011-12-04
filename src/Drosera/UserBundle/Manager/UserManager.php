@@ -36,17 +36,20 @@ class UserManager implements UserProviderInterface
         $this->userRepository->update($user);
     }
     
+    public function remove(UserInterface $user)
+    {
+        $user->setTimeDeleted(new \DateTime());
+        $this->userRepository->update($user);
+    }
+    
     public function getList($withSuperadmins = false)
     {
         return $this->userRepository->getList($withSuperadmins); 
     }
     
     public function getById($id)
-    {
-        if (!$id = intval($id))
-            return null;
-       
-        $criteria = array('id' => $id, 'time_deleted' => null);
+    {       
+        $criteria = array('id' => intval($id), 'time_deleted' => null);
         return $this->userRepository->findOneBy($criteria); 
     }
     

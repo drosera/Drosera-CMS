@@ -16,11 +16,13 @@ class UserController extends Controller
     public function listAction()
     {
         $userManager = $this->get('drosera_user.user_manager');
-        $isSuperadmin = $this->get('security.context')->isGranted('ROLE_SUPERADMIN'); 
+        $isSuperadmin = $this->get('security.context')->isGranted('ROLE_SUPERADMIN');
+        $loggedUser = $this->get('security.context')->getToken()->getUser();
         $users = $userManager->getList($isSuperadmin);
         
         return $this->render('DroseraUserBundle:User:list.html.twig', array(
             'users' => $users,
+            'loggedUser' => $loggedUser
         ));
     }
     
@@ -72,23 +74,10 @@ class UserController extends Controller
     public function deleteAction($id)
     {
         $userManager = $this->get('drosera_user.user_manager');
-        $user = $userManager->getById($request->get('id'));
         
-        $loggedUser = $this->get('security.context')->getToken()->getUser();
-        $form = $this->createForm(new UserType($loggedUser), $user);
-        
-        if ($request->getMethod() == 'POST') {
-            $form->bindRequest($request);
-    
-            if ($form->isValid()) {
-                $userManager->update($user);   
-                return $this->redirect($this->generateUrl('drosera_user_admin_user_list'));
-            }
-        }
-        
-        return $this->render('DroseraUserBundle:User:edit.html.twig', array(
-            'form' => $form->createView(),
-            'user' => $user,
-        ));
+        $user = $userManager->getById($id);
+        $userManager->remove($user);
+               
+        return $this->redirect($this->generateUrl('drosera_user_admin_user_list'));
     }   
 }

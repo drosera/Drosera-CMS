@@ -9,6 +9,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
+use Symfony\Component\Validator\Constraint;
 
 class UserManager implements UserProviderInterface 
 {
@@ -59,9 +60,9 @@ class UserManager implements UserProviderInterface
         }
     }
     
-    public function validateUniqueUsername(UserInterface $user)
+    public function validateUnique(UserInterface $user, Constraint $constraint)
     {       
-        return $this->userRepository->isUnique($user);
+        return $this->userRepository->isUnique($user, $constraint->property);
     }
     
     protected function getEncoder(UserInterface $user)

@@ -19,7 +19,8 @@ Drosera\UserBundle\Entity\User:
         passwordConfirm:
             - "True": { message: "Hesla se neshodují.", groups: [create] }
     constraints:
-        - validator:UniqueUsername: { groups: [create, edit] }
+        - validator:Unique: { property: "username", message: "Zadané uživatelské jméno již existuje.", groups: [create, edit] }
+        - validator:Unique: { property: "email", message: "Zadaný e-mail již existuje.", groups: [create, edit] }
 
 
                     

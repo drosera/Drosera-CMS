@@ -16,7 +16,8 @@ class UserController extends Controller
     public function listAction()
     {
         $userManager = $this->get('drosera_user.user_manager');
-        $users = $userManager->getList();
+        $isSuperadmin = $this->get('security.context')->isGranted('ROLE_SUPERADMIN'); 
+        $users = $userManager->getList($isSuperadmin);
         
         return $this->render('DroseraUserBundle:User:list.html.twig', array(
             'users' => $users,
@@ -28,8 +29,8 @@ class UserController extends Controller
         $userManager = $this->get('drosera_user.user_manager');
         $user = $userManager->create();
         
-        $loggedUser = $this->get('security.context')->getToken()->getUser();
-        $form = $this->createForm(new UserType(array('create'), $loggedUser), $user);
+        $isSuperadmin = $this->get('security.context')->isGranted('ROLE_SUPERADMIN');
+        $form = $this->createForm(new UserType(array('create'), $isSuperadmin), $user);
         
         if ($request->getMethod() == 'POST') {
             $form->bindRequest($request);
@@ -50,8 +51,8 @@ class UserController extends Controller
         $userManager = $this->get('drosera_user.user_manager');
         $user = $userManager->getById($request->get('id'));
         
-        $loggedUser = $this->get('security.context')->getToken()->getUser();
-        $form = $this->createForm(new UserType(array('edit'), $loggedUser), $user);
+        $isSuperadmin = $this->get('security.context')->isGranted('ROLE_SUPERADMIN');
+        $form = $this->createForm(new UserType(array('edit'), $isSuperadmin), $user);
         
         if ($request->getMethod() == 'POST') {
             $form->bindRequest($request);

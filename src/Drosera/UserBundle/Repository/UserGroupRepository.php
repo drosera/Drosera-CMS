@@ -17,17 +17,13 @@ class UserGroupRepository extends EntityRepository
         }
     } 
     
-    public function getValid(UserInterface $user, $returnQuery = false)
+    public function getValid($withSuperadmin = false, $returnQueryBuilder = false)
     {        
-        $userGroupId = $user->getUserGroup()->getId();
         $qb = $this->createQueryBuilder('ug')->where('ug.time_deleted IS NULL')->orderBy('ug.name', 'ASC');
-        
-        if ($userGroupId > 1)
+
+        if (!$withSuperadmin)
            $qb->where('ug.id > 1'); 
-        
-        if ($returnQuery)
-            return $qb;
             
-        return $qb->getQuery()->getResults();
+        return $returnQueryBuilder ? $qb : $qb->getQuery()->getResults();
     }  
 }

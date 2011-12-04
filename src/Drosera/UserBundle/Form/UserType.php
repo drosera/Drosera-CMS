@@ -10,11 +10,11 @@ use Doctrine\ORM\EntityRepository;
 
 class UserType extends AbstractType
 {
-    protected $loggedUser;
+    protected $withSuperadmin;
     protected $validationGroups;
 
-    function __construct($validationGroups, UserInterface $loggedUser) {
-        $this->loggedUser = $loggedUser;
+    function __construct($validationGroups, $withSuperadmin = false) {
+        $this->withSuperadmin = $withSuperadmin;
         $this->validationGroups = $validationGroups;
     }
 
@@ -31,11 +31,11 @@ class UserType extends AbstractType
         $builder->add('passwordConfirm', 'password', array('label' => 'Potvrzení hesla', 'required' => false));
         //$builder->add('user_group', null, array('label' => 'Uživatelská skupina'));
         
-        $loggedUser = $this->loggedUser;
+        $withSuperadmin = $this->withSuperadmin;
         $builder->add('user_group', 'entity', array(
             'class' => 'DroseraUserBundle:UserGroup',
-            'query_builder' => function(EntityRepository $er) use ($loggedUser) {
-                return $er->getValid($loggedUser, true);
+            'query_builder' => function(EntityRepository $er) use ($withSuperadmin) {
+                return $er->getValid($withSuperadmin, true);
             },
         ));
     }

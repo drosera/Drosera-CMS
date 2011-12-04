@@ -6,7 +6,6 @@ use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\UnitOfWork;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-
 class UserRepository extends EntityRepository
 {
     public function update(UserInterface $user, $andFlush = true)
@@ -17,11 +16,25 @@ class UserRepository extends EntityRepository
         {
             $this->_em->flush();
         }
-    } 
+    }
+    
+    public function getList($withSuperadmins)
+    {          
+       // snad se to takhle chova jako eager join
+       $qb = $this->createQueryBuilder('u', 'ug')
+            ->select('u', 'ug')
+            ->join('u.user_group', 'ug')
+            ->where('u.time_deleted IS NULL');  
+
+         
+        if (!$withSuperadmins)    
+            $qb->andWhere('ug.id != 1');
+                        
+        return $qb->getQuery()->getResult();
+    }  
     
     public function isUnique(UserInterface $user, $propertyName)
     {
-        //var_dump($this->_class); 
         $classMetadata = $this->_em->getClassMetadata($this->_entityName);        
         if (!$classMetadata->hasField($propertyName)) {
             throw new \InvalidArgumentException(sprintf('The "%s" class metadata does not have any "%s" field or association mapping.', $this->_class, $propertyName));

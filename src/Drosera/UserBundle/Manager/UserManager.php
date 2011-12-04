@@ -36,10 +36,9 @@ class UserManager implements UserProviderInterface
         $this->userRepository->update($user);
     }
     
-    public function getList()
+    public function getList($withSuperadmins = false)
     {
-        $criteria = array('time_deleted' => null);
-        return $this->userRepository->findBy($criteria); 
+        return $this->userRepository->getList($withSuperadmins); 
     }
     
     public function getById($id)

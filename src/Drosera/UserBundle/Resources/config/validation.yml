@@ -14,10 +14,10 @@ Drosera\UserBundle\Entity\User:
             - Email: { message: "Zadejte prosím správnou e-mailovou adresu.", groups: [create, edit] }
         plainPassword:
             - NotBlank: { message: "Zadejte prosím heslo.", groups: [create] }
-            - MinLength: { limit: 6, message: "Zadané heslo je příliš krátké.", groups: [create]} 
+            - MinLength: { limit: 6, message: "Zadané heslo je příliš krátké.", groups: [create, edit]} 
     getters:
         passwordConfirm:
-            - "True": { message: "Hesla se neshodují.", groups: [create] }
+            - "True": { message: "Hesla se neshodují.", groups: [create, edit] }
     constraints:
         - validator:Unique: { property: "username", message: "Zadané uživatelské jméno již existuje.", groups: [create, edit] }
         - validator:Unique: { property: "email", message: "Zadaný e-mail již existuje.", groups: [create, edit] }

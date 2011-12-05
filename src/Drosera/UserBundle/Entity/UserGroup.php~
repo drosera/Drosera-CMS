@@ -25,7 +25,7 @@ class UserGroup
     protected $name;
 
     /**
-     * @ORM\OneToMany(targetEntity="User", mappedBy="UserGroup")
+     * @ORM\OneToMany(targetEntity="User", mappedBy="user_group")
      */
     protected $users;
     
@@ -125,9 +125,9 @@ class UserGroup
      *
      * @param Drosera\UserBundle\Entity\User $users
      */
-    public function addUser(\Drosera\UserBundle\Entity\User $users)
+    public function addUser(\Drosera\UserBundle\Entity\User $user)
     {
-        $this->users[] = $users;
+        $this->users[] = $user;
     }
 
     /**

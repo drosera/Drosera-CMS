@@ -16,13 +16,22 @@ class UserController extends Controller
     public function listAction()
     {
         $userManager = $this->get('drosera_user.user_manager');
-        $isSuperadmin = $this->get('security.context')->isGranted('ROLE_SUPERADMIN');
         $loggedUser = $this->get('security.context')->getToken()->getUser();
-        $users = $userManager->getList($isSuperadmin);
+        $users = $userManager->getList();
         
         return $this->render('DroseraUserBundle:User:list.html.twig', array(
             'users' => $users,
             'loggedUser' => $loggedUser
+        ));
+    }
+    
+    public function trashAction()
+    {
+        $userManager = $this->get('drosera_user.user_manager');
+        $users = $userManager->getTrashed();
+        
+        return $this->render('DroseraUserBundle:User:trash.html.twig', array(
+            'users' => $users,
         ));
     }
     
@@ -71,7 +80,25 @@ class UserController extends Controller
         ));
     }
     
-    public function deleteAction($id)
+    public function emptyTrashAction()
+    {
+        $userManager = $this->get('drosera_user.user_manager');        
+        $userManager->deleteTrashed();
+               
+        return $this->redirect($this->generateUrl('drosera_user_admin_user_trash'));
+    }
+    
+    public function restoreAction($id)
+    {
+        $userManager = $this->get('drosera_user.user_manager');
+        
+        $user = $userManager->getById($id);
+        $userManager->restore($user);
+               
+        return $this->redirect($this->generateUrl('drosera_user_admin_user_trash'));
+    }
+    
+    public function removeAction($id)
     {
         $userManager = $this->get('drosera_user.user_manager');
         
@@ -79,5 +106,15 @@ class UserController extends Controller
         $userManager->remove($user);
                
         return $this->redirect($this->generateUrl('drosera_user_admin_user_list'));
+    }
+    
+    public function deleteAction($id)
+    {
+        $userManager = $this->get('drosera_user.user_manager');
+        
+        $user = $userManager->getById($id);
+        $userManager->delete($user);
+               
+        return $this->redirect($this->generateUrl('drosera_user_admin_user_trash'));
     }   
 }

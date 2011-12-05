@@ -24,14 +24,18 @@ class UserRepository extends EntityRepository
         $this->_em->flush();
     }
     
-    public function getList($withSuperadmins)
+    public function getList($trashed = false, $withSuperadmins = false)
     {          
        // snad se to takhle chova jako eager join
        $qb = $this->createQueryBuilder('u', 'ug')
             ->select('u', 'ug')
             ->join('u.user_group', 'ug')
-            ->where('u.time_deleted IS NULL');  
-
+            ->where('u.time_deleted IS NULL');
+            
+        if ($trashed)    
+            $qb->andWhere('u.time_trashed IS NOT NULL');
+        else  
+            $qb->andWhere('u.time_trashed IS NULL');
          
         if (!$withSuperadmins)    
             $qb->andWhere('ug.id != 1');
@@ -48,9 +52,8 @@ class UserRepository extends EntityRepository
         $propertyValue = $classMetadata->getFieldValue($user, $propertyName);
         
         $qb = $this->createQueryBuilder('u')
-            ->where('u.time_deleted IS NULL')
-            ->andWhere('u.'.$propertyName.' = :username')
-            ->setParameter('username', $propertyValue);
+            ->andWhere('u.'.$propertyName.' = :value')
+            ->setParameter('value', $propertyValue);
             
         if ($this->_em->getUnitOfWork()->getEntityState($user) != UnitOfWork::STATE_NEW) {
           $qb->andWhere('u.id != :user_id')->setParameter('user_id', $user->getId());  

@@ -1,17 +1,15 @@
 {% extends 'DroseraAdminBundle::layout.html.twig' %}
 
 {% block content %}
-    <h1>Seznam uživatelů</h1>
-    <div>
-        {#% render "DroseraUserBudnle:User:categoryMenu" %#}
-    </div>
-    <a href="{{ path('drosera_user_admin_user_create') }}">Vytvořit uživatele</a> 
+    <h1>Uživatelé - koš</h1>
+    <a href="{{ path('drosera_user_admin_user_empty_trash') }}" onclick="return confirm('Opravdu si přejete vysypat koš?');">Vysypat koš</a> 
     <table>
         <tr>
             <td>Login</td>
             <td>Jméno</td>
             <td>E-mail</td>
             <td>Uživatelská skupina</td>
+            <td>Datum odstranění</td>
             <td>&nbsp;</td>
             <td>&nbsp;</td>
         </tr>
@@ -21,12 +19,13 @@
                 <td>{{ user.fullname }}</td>
                 <td>{{ user.email }}</td>
                 <td>{{ user.usergroup }}</td>
-                <td><a href="{{ path('drosera_user_admin_user_edit', {'id':user.id}) }}">Upravit</a></td>
-                <td>
-                    {% if loggedUser.id != user.id %}
-                        <a href="{{ path('drosera_user_admin_user_remove', {'id':user.id}) }}">Odstranit</a>
-                    {% endif %}    
-                </td>
+                <td>{{ user.timeTrashed | date('d.m.Y H:i:s') }}</td>
+                <td><a href="{{ path('drosera_user_admin_user_restore', {'id':user.id}) }}">Obnovit</a></td>
+                <td><a href="{{ path('drosera_user_admin_user_delete', {'id':user.id}) }}" onclick="return confirm('Opravdu si přejete odstranit uživatele?');">Odstranit</a></td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5"><em>Koš je prázdný..</em></td>
             </tr>
         {% endfor %}
         <tr>
@@ -34,8 +33,7 @@
             <td>Jméno</td>
             <td>E-mail</td>
             <td>Uživatelská skupina</td>
-            <td>&nbsp;</td>
-            <td>&nbsp;</td>
+            <td>Datum odstranění</td>
         </tr>
     </table>
 {% endblock %}

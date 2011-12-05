@@ -5,6 +5,7 @@ namespace Drosera\UserBundle\Manager;
 use Drosera\UserBundle\Entity\User;
 use Drosera\UserBundle\Repository\UserRepository;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
@@ -13,13 +14,15 @@ use Symfony\Component\Validator\Constraint;
 
 class UserManager implements UserProviderInterface 
 {
-    protected $userRepository;    
+    protected $userRepository;
+    protected $container;     
     protected $encoderFactory;
     protected $class;
     
-    public function __construct(UserRepository $userRepository, EncoderFactoryInterface $encoderFactory, $class)
+    public function __construct(UserRepository $userRepository, ContainerInterface $container, EncoderFactoryInterface $encoderFactory, $class)
     {
-       $this->userRepository = $userRepository; 
+       $this->userRepository = $userRepository;
+       $this->container = $container; 
        $this->encoderFactory = $encoderFactory;
        $this->class = $class; 
     }
@@ -36,15 +39,54 @@ class UserManager implements UserProviderInterface
         $this->userRepository->update($user);
     }
     
-    public function remove(UserInterface $user)
+    public function restore(UserInterface $user)
     {
-        $user->setTimeDeleted(new \DateTime());
+        $user->setTimeTrashed(null);                   
         $this->userRepository->update($user);
     }
     
-    public function getList($withSuperadmins = false)
+    public function remove(UserInterface $user)
     {
-        return $this->userRepository->getList($withSuperadmins); 
+        $time = new \DateTime();
+        
+        if ($user->getTimeTrashed() === null)
+          $user->setTimeTrashed($time);           
+        
+        $this->userRepository->update($user);
+    }
+    
+    public function delete(UserInterface $user)
+    {
+        $time = new \DateTime();
+        
+        if ($user->getTimeTrashed() === null)
+          $user->setTimeTrashed($time);  
+        
+        if ($user->getTimeDeleted() === null)
+          $user->setTimeDeleted($time);        
+        
+        $this->userRepository->update($user);
+    }
+    
+    public function getList()
+    {
+        $withSuperadmins = $this->container->get('security.context')->isGranted('ROLE_SUPERADMIN');
+        return $this->userRepository->getList(false, $withSuperadmins); 
+    }
+    
+    public function getTrashed()
+    {
+        $withSuperadmins = $this->container->get('security.context')->isGranted('ROLE_SUPERADMIN');
+        return $this->userRepository->getList(true, $withSuperadmins); 
+    }
+    
+    public function deleteTrashed()
+    {
+        $withSuperadmins = $this->container->get('security.context')->isGranted('ROLE_SUPERADMIN');
+        $trashedUsers = $this->userRepository->getList(true, $withSuperadmins);
+        
+        foreach ($trashedUsers as $user)
+           $this->delete($user);  
     }
     
     public function getById($id)
@@ -97,7 +139,7 @@ class UserManager implements UserProviderInterface
      */ 
     public function loadUserByUsername($username)
     {
-        $criteria = array('username' => $username, 'active' => true, 'time_deleted' => null);
+        $criteria = array('username' => $username, 'active' => true,'time_trashed' => null, 'time_deleted' => null);
         $user = $this->userRepository->findOneBy($criteria);
         
         if (!$user) {

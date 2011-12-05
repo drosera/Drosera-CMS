@@ -84,6 +84,11 @@ class User implements UserInterface
     /**
      * @ORM\Column(type="datetime", nullable=true) 
      */
+    protected $time_trashed;
+    
+    /**
+     * @ORM\Column(type="datetime", nullable=true) 
+     */
     protected $time_deleted;
     
     
@@ -556,5 +561,25 @@ class User implements UserInterface
     public function setPasswordConfirm($passwordConfirm)
     {       
         $this->passwordConfirm = ($passwordConfirm == $this->plainPassword) ? true : false;
+    }
+
+    /**
+     * Set time_trashed
+     *
+     * @param datetime $timeTrashed
+     */
+    public function setTimeTrashed($timeTrashed)
+    {
+        $this->time_trashed = $timeTrashed;
+    }
+
+    /**
+     * Get time_trashed
+     *
+     * @return datetime 
+     */
+    public function getTimeTrashed()
+    {
+        return $this->time_trashed;
     }
 }

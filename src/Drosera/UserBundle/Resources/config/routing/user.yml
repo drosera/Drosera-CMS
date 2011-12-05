@@ -2,6 +2,18 @@ drosera_user_admin_user_list:
     pattern:  /list
     defaults: { _controller: DroseraUserBundle:User:list }
     
+drosera_user_admin_user_trash:
+    pattern:  /trash
+    defaults: { _controller: DroseraUserBundle:User:trash }
+    
+drosera_user_admin_user_empty_trash:
+    pattern:  /emptyTrash
+    defaults: { _controller: DroseraUserBundle:User:emptyTrash }
+    
+drosera_user_admin_user_restore:
+    pattern:  /restore/{id}
+    defaults: { _controller: DroseraUserBundle:User:restore }
+    
 drosera_user_admin_user_create:
     pattern:  /create
     defaults: { _controller: DroseraUserBundle:User:create }
@@ -9,6 +21,10 @@ drosera_user_admin_user_create:
 drosera_user_admin_user_edit:
     pattern:  /edit/{id}
     defaults: { _controller: DroseraUserBundle:User:edit }
+    
+drosera_user_admin_user_remove:
+    pattern:  /remove/{id}
+    defaults: { _controller: DroseraUserBundle:User:remove }
     
 drosera_user_admin_user_delete:
     pattern:  /delete/{id}

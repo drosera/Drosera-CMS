@@ -18,19 +18,25 @@ class UserRepository extends EntityRepository
         }
     }
     
+    public function flush()
+    {
+        $this->_em->flush();        
+    }
+    
     public function remove(UserInterface $user)
     {
         $this->_em->remove($user);
         $this->_em->flush();
     }
     
-    public function getList($trashed = false, $withSuperadmins = false)
+    public function getList($trashed = false, $withSuperadmins = false, $userGroupFilter = null)
     {          
        // snad se to takhle chova jako eager join
        $qb = $this->createQueryBuilder('u', 'ug')
             ->select('u', 'ug')
             ->join('u.user_group', 'ug')
-            ->where('u.time_deleted IS NULL');
+            ->where('u.time_deleted IS NULL')
+            ->AndWhere('ug.time_deleted IS NULL');
             
         if ($trashed)    
             $qb->andWhere('u.time_trashed IS NOT NULL');
@@ -39,6 +45,10 @@ class UserRepository extends EntityRepository
          
         if (!$withSuperadmins)    
             $qb->andWhere('ug.id != 1');
+            
+        if ($userGroupFilter)    
+            $qb->andWhere('ug.id = :user_group')
+            ->setParameter('user_group', $userGroupFilter);
                         
         return $qb->getQuery()->getResult();
     }  

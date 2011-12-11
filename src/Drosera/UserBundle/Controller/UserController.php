@@ -15,9 +15,11 @@ class UserController extends Controller
     
     public function listAction()
     {
+        $userGroup = intval($this->get('request')->get('user_group')); 
+        
         $userManager = $this->get('drosera_user.user_manager');
         $loggedUser = $this->get('security.context')->getToken()->getUser();
-        $users = $userManager->getList();
+        $users = $userManager->getList($userGroup);
         
         return $this->render('DroseraUserBundle:User:list.html.twig', array(
             'users' => $users,
@@ -47,7 +49,8 @@ class UserController extends Controller
             $form->bindRequest($request);
     
             if ($form->isValid()) {
-                $userManager->update($user);   
+                $userManager->update($user); 
+                $this->get('session')->setFlash('success', 'Uživatel byl úspěšně vytvořen!');  
                 return $this->redirect($this->generateUrl('drosera_user_admin_user_list'));
             }
         }
@@ -69,7 +72,8 @@ class UserController extends Controller
             $form->bindRequest($request);
     
             if ($form->isValid()) {
-                $userManager->update($user);   
+                $userManager->update($user); 
+                $this->get('session')->setFlash('success', 'Uživatel byl úspěšně upraven!');  
                 return $this->redirect($this->generateUrl('drosera_user_admin_user_list'));
             }
         }
@@ -84,7 +88,8 @@ class UserController extends Controller
     {
         $userManager = $this->get('drosera_user.user_manager');        
         $userManager->deleteTrashed();
-               
+        
+        $this->get('session')->setFlash('success', 'Koš byl úspěšně vysypán!');       
         return $this->redirect($this->generateUrl('drosera_user_admin_user_trash'));
     }
     
@@ -95,6 +100,7 @@ class UserController extends Controller
         $user = $userManager->getById($id);
         $userManager->restore($user);
                
+        $this->get('session')->setFlash('success', 'Uživatel byl úspěšně obnoven!');
         return $this->redirect($this->generateUrl('drosera_user_admin_user_trash'));
     }
     
@@ -104,7 +110,8 @@ class UserController extends Controller
         
         $user = $userManager->getById($id);
         $userManager->remove($user);
-               
+        
+        $this->get('session')->setFlash('success', 'Uživatel byl přesunut do koše!');       
         return $this->redirect($this->generateUrl('drosera_user_admin_user_list'));
     }
     
@@ -114,7 +121,24 @@ class UserController extends Controller
         
         $user = $userManager->getById($id);
         $userManager->delete($user);
-               
+        
+        $this->get('session')->setFlash('success', 'Uživatel byl úspěšně odstraněn!');       
         return $this->redirect($this->generateUrl('drosera_user_admin_user_trash'));
+    }
+    
+    public function filterMenuAction()
+    {
+        $userManager = $this->get('drosera_user.user_manager');
+        $countAll = count($userManager->getList());
+        $countTrashed = count($userManager->getTrashed());
+        
+        $userGroupManager = $this->get('drosera_user.user_group_manager');
+        $userGroups = $userGroupManager->getFilterMenu();
+        
+        return $this->render('DroseraUserBundle:User:filterMenu.html.twig', array(
+            'countAll' => $countAll,
+            'countTrashed' => $countTrashed,
+            'userGroups' => $userGroups,
+        ));        
     }   
 }

@@ -2,6 +2,11 @@
 
 {% block content %}
     <h1>Uživatelé - koš</h1>
+    {% if app.session.hasFlash('success') %}
+        <div>
+            {{ app.session.flash('success') }}
+        </div>
+    {% endif %}
     <a href="{{ path('drosera_user_admin_user_empty_trash') }}" onclick="return confirm('Opravdu si přejete vysypat koš?');">Vysypat koš</a> 
     <table>
         <tr>

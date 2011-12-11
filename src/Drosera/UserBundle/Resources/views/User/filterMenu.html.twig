@@ -1,0 +1,11 @@
+<ul>
+    <li><a href="{{ path('drosera_user_admin_user_list') }}">Vše ({{ countAll }})</a></li>
+    {% for group in userGroups %}
+       
+            <li><a href="{{ path('drosera_user_admin_user_list', {'user_group':group.0.id}) }}">{{ group.0.name }} ({{ group.countUsers }})</a></li> 
+
+    {% endfor %}
+    {% if countTrashed > 0 %}
+        <li><a href="{{ path('drosera_user_admin_user_trash') }}">Koš ({{ countTrashed }})</a></li>
+    {% endif %}
+</ul>

@@ -2,8 +2,13 @@
 
 {% block content %}
     <h1>Seznam uživatelů</h1>
+    {% if app.session.hasFlash('success') %}
+        <div>
+            {{ app.session.flash('success') }}
+        </div>
+    {% endif %}
     <div>
-        {#% render "DroseraUserBudnle:User:categoryMenu" %#}
+        {% render "DroseraUserBundle:User:filterMenu" %}
     </div>
     <a href="{{ path('drosera_user_admin_user_create') }}">Vytvořit uživatele</a> 
     <table>

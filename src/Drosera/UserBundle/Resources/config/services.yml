@@ -1,17 +1,28 @@
 parameters:
-    drosera_user.manager.user_manager.class: Drosera\UserBundle\Manager\UserManager
+    drosera_user.manager.user_manager.class: Drosera\UserBundle\Manager\UserManager 
     drosera_user.entity.user.class: Drosera\UserBundle\Entity\User
+    drosera_user.manager.user_group_manager.class: Drosera\UserBundle\Manager\UserGroupManager 
+    drosera_user.entity.user_group.class: Drosera\UserBundle\Entity\UserGroup
     drosera_user.validator.unique.class: Drosera\UserBundle\Validator\UniqueValidator
 
 services: 
     drosera_user.repository.user_repository:
         parent: drosera_admin.repo
         arguments: [%drosera_user.entity.user.class%]
+        
+    drosera_user.repository.user_group_repository:
+        parent: drosera_admin.repo
+        arguments: [%drosera_user.entity.user_group.class%]
 
     drosera_user.user_manager:
         class: %drosera_user.manager.user_manager.class%
         arguments: [@drosera_user.repository.user_repository, @service_container, @security.encoder_factory, %drosera_user.entity.user.class%]
-        
+    
+    drosera_user.user_group_manager:
+        class: %drosera_user.manager.user_group_manager.class%
+        arguments: [@drosera_user.repository.user_group_repository, @service_container, %drosera_user.entity.user_group.class%]
+
+    
     drosera_user.validator.unique:
        class:      %drosera_user.validator.unique.class%
        arguments: [@drosera_user.user_manager]

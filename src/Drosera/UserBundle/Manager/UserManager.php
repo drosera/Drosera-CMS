@@ -2,7 +2,6 @@
 
 namespace Drosera\UserBundle\Manager;
 
-use Drosera\UserBundle\Entity\User;
 use Drosera\UserBundle\Repository\UserRepository;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -55,7 +54,7 @@ class UserManager implements UserProviderInterface
         $this->userRepository->update($user);
     }
     
-    public function delete(UserInterface $user)
+    public function delete(UserInterface $user, $andFlush = true)
     {
         $time = new \DateTime();
         
@@ -65,13 +64,13 @@ class UserManager implements UserProviderInterface
         if ($user->getTimeDeleted() === null)
           $user->setTimeDeleted($time);        
         
-        $this->userRepository->update($user);
+        $this->userRepository->update($user, $andFlush);
     }
     
-    public function getList()
+    public function getList($userGroup = null)
     {
         $withSuperadmins = $this->container->get('security.context')->isGranted('ROLE_SUPERADMIN');
-        return $this->userRepository->getList(false, $withSuperadmins); 
+        return $this->userRepository->getList(false, $withSuperadmins, $userGroup); 
     }
     
     public function getTrashed()
@@ -86,7 +85,9 @@ class UserManager implements UserProviderInterface
         $trashedUsers = $this->userRepository->getList(true, $withSuperadmins);
         
         foreach ($trashedUsers as $user)
-           $this->delete($user);  
+           $this->delete($user, false); 
+        
+        $this->userRepository->flush(); 
     }
     
     public function getById($id)

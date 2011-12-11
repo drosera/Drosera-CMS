@@ -17,13 +17,32 @@ class UserGroupRepository extends EntityRepository
         }
     } 
     
-    public function getValid($withSuperadmin = false, $returnQueryBuilder = false)
+    public function getAll($withSuperadmin = false, $returnQueryBuilder = false)
     {        
         $qb = $this->createQueryBuilder('ug')->where('ug.time_deleted IS NULL')->orderBy('ug.name', 'ASC');
 
         if (!$withSuperadmin)
            $qb->where('ug.id > 1'); 
             
-        return $returnQueryBuilder ? $qb : $qb->getQuery()->getResults();
+        return $returnQueryBuilder ? $qb : $qb->getQuery()->getResult();
+    }
+    
+    public function getFilterMenu($withSuperadmin = false)
+    {        
+        $query = 'SELECT ug, count(u.id) AS countUsers 
+                  FROM DroseraUserBundle:UserGroup ug 
+                  JOIN ug.users u 
+                  WHERE u.time_deleted IS NULL 
+                  AND u.time_trashed IS NULL
+                  AND ug.time_deleted IS NULL';
+        
+        if (!$withSuperadmin)
+            $query .= ' AND ug.id != 1';
+        
+        $query .= ' GROUP BY ug.id';
+        
+        $q = $this->_em->createQuery($query); 
+            
+        return $q->getResult();
     }  
 }

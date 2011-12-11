@@ -139,4 +139,9 @@ class UserGroup
     {
         return $this->users;
     }
+    
+    public function getUsersCount()
+    {
+        return count($this->users);
+    }
 }

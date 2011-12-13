@@ -22,9 +22,8 @@ services:
         class: %drosera_user.manager.user_group_manager.class%
         arguments: [@drosera_user.repository.user_group_repository, @service_container, %drosera_user.entity.user_group.class%]
 
-    
     drosera_user.validator.unique:
-       class:      %drosera_user.validator.unique.class%
-       arguments: [@drosera_user.user_manager]
-       tags:
+        class:      %drosera_user.validator.unique.class%
+        arguments: [@doctrine.orm.entity_manager]
+        tags:
             - { name: validator.constraint_validator, alias: drosera_user.validator.unique }

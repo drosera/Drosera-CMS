@@ -21,6 +21,10 @@ Drosera\UserBundle\Entity\User:
     constraints:
         - validator:Unique: { property: "username", message: "Zadané uživatelské jméno již existuje.", groups: [create, edit] }
         - validator:Unique: { property: "email", message: "Zadaný e-mail již existuje.", groups: [create, edit] }
-
-
-                    
+        
+Drosera\UserBundle\Entity\UserGroup:
+    properties:
+        name:
+            - NotBlank: { message: "Zadejte prosím jméno uživatelské skupiny." } 
+    constraints:
+        - validator:Unique: { property: "name", message: "Zadané jméno již existuje." }                   

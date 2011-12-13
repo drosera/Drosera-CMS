@@ -34,7 +34,7 @@ class UserType extends AbstractType
         $builder->add('user_group', 'entity', array(
             'class' => 'DroseraUserBundle:UserGroup',
             'query_builder' => function(EntityRepository $er) use ($withSuperadmin) {
-                return $er->getAll($withSuperadmin, true);
+                return $er->getAll(false, $withSuperadmin, true);
             },
         ));
     }

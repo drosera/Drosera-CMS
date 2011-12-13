@@ -3,6 +3,7 @@
 namespace Drosera\UserBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\UnitOfWork;
 use Drosera\UserBundle\Entity\UserGroup;
 
 class UserGroupRepository extends EntityRepository
@@ -54,5 +55,26 @@ class UserGroupRepository extends EntityRepository
         $q = $this->_em->createQuery($query); 
             
         return $q->getResult();
-    }  
+    } 
+    
+    public function isUnique(UserGroup $userGroup, $propertyName)
+    {
+        $classMetadata = $this->_em->getClassMetadata($this->_entityName);        
+        if (!$classMetadata->hasField($propertyName)) {
+            throw new \InvalidArgumentException(sprintf('The "%s" class metadata does not have any "%s" field or association mapping.', $this->_class, $propertyName));
+        }        
+        $propertyValue = $classMetadata->getFieldValue($userGroup, $propertyName);
+        
+        $qb = $this->createQueryBuilder('ug')
+            ->andWhere('ug.'.$propertyName.' = :value')
+            ->setParameter('value', $propertyValue);
+            
+        if ($this->_em->getUnitOfWork()->getEntityState($userGroup) != UnitOfWork::STATE_NEW) {
+          $qb->andWhere('ug.id != :id')->setParameter('id', $userGroup->getId());  
+        }
+            
+        $users = $qb->getQuery()->getResult();
+   
+        return (boolean) !count($users);
+    }
 }

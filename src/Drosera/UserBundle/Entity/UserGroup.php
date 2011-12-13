@@ -56,6 +56,11 @@ class UserGroup
     {
         return $this->getName();
     }
+    
+    public function isSystem()
+    {
+        return $this->getId() <= 3;
+    }
 
     /**
      * Get id

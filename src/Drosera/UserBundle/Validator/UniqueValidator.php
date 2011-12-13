@@ -4,30 +4,31 @@ namespace Drosera\UserBundle\Validator;
 
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
-use Drosera\UserBundle\Manager\UserManager;
+use Doctrine\ORM\EntityManager;
 
 class UniqueValidator extends ConstraintValidator
 {
-    protected $userManager;
+    protected $em;
 
-    public function __construct(UserManager $userManager)
+    public function __construct(EntityManager $em)
     {
-        $this->userManager = $userManager;
+        $this->em = $em;
     }
 
-    public function setUserManager(UserManager $userManager)
+    public function getEntityManager()
     {
-        $this->userManager = $userManager;
+        return $this->em;
     }
-
-    public function getUserManager()
+    
+    private function getClassRepository()
     {
-        return $this->userManager;
+        $className = $this->context->getCurrentClass();
+        return $this->getEntityManager()->getRepository($className);
     }
 
     public function isValid($object, Constraint $constraint)
     {
-        if (!$this->getUserManager()->validateUnique($object, $constraint)) {
+        if (!$this->getClassRepository()->isUnique($object, $constraint->property)) {
             $property_path = $this->context->getPropertyPath() .'.'. $constraint->property;
             $this->context->setPropertyPath($property_path);
             $this->context->addViolation($constraint->message, array('%property%' => $constraint->property), null);

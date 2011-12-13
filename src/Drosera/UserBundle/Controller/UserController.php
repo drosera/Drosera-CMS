@@ -48,7 +48,7 @@ class UserController extends Controller
     
             if ($form->isValid()) {
                 $userManager->update($user); 
-                $this->get('session')->setFlash('success', 'Uivatel byl úspìšnì vytvoøen!');  
+                $this->get('session')->setFlash('success', 'UÅ¾ivatel byl ÃºspÄ›Å¡nÄ› vytvoÅ™en!');  
                 return $this->redirect($this->generateUrl('drosera_user_admin_user_list'));
             }
         }
@@ -71,7 +71,7 @@ class UserController extends Controller
     
             if ($form->isValid()) {
                 $userManager->update($user); 
-                $this->get('session')->setFlash('success', 'Uivatel byl úspìšnì upraven!');  
+                $this->get('session')->setFlash('success', 'UÅ¾ivatel byl ÃºspÄ›Å¡nÄ› upraven!');  
                 return $this->redirect($this->generateUrl('drosera_user_admin_user_list'));
             }
         }
@@ -87,7 +87,7 @@ class UserController extends Controller
         $userManager = $this->get('drosera_user.user_manager');        
         $userManager->deleteTrashed();
         
-        $this->get('session')->setFlash('success', 'Koš byl úspìšnì vysypán!');       
+        $this->get('session')->setFlash('success', 'KoÅ¡ byl ÃºspÄ›Å¡nÄ› vysypÃ¡n!');       
         return $this->redirect($this->generateUrl('drosera_user_admin_user_trash'));
     }
     
@@ -98,7 +98,7 @@ class UserController extends Controller
         $user = $userManager->getById($id);
         $userManager->restore($user);
                
-        $this->get('session')->setFlash('success', 'Uivatel byl úspìšnì obnoven!');
+        $this->get('session')->setFlash('success', 'UÅ¾ivatel byl ÃºspÄ›Å¡nÄ› obnoven!');
         return $this->redirect($this->generateUrl('drosera_user_admin_user_trash'));
     }
     
@@ -109,7 +109,7 @@ class UserController extends Controller
         $user = $userManager->getById($id);
         $userManager->remove($user);
         
-        $this->get('session')->setFlash('success', 'Uivatel byl pøesunut do koše!');       
+        $this->get('session')->setFlash('success', 'UÅ¾ivatel byl pÅ™esunut do koÅ¡e!');       
         return $this->redirect($this->generateUrl('drosera_user_admin_user_list'));
     }
     
@@ -120,7 +120,7 @@ class UserController extends Controller
         $user = $userManager->getById($id);
         $userManager->delete($user);
         
-        $this->get('session')->setFlash('success', 'Uivatel byl úspìšnì odstranìn!');       
+        $this->get('session')->setFlash('success', 'UÅ¾ivatel byl ÃºspÄ›Å¡nÄ› odstranÄ›n!');       
         return $this->redirect($this->generateUrl('drosera_user_admin_user_trash'));
     }
     

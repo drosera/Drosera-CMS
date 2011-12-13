@@ -60,7 +60,7 @@ class UserRepository extends EntityRepository
             ->setParameter('value', $propertyValue);
             
         if ($this->_em->getUnitOfWork()->getEntityState($user) != UnitOfWork::STATE_NEW) {
-          $qb->andWhere('u.id != :user_id')->setParameter('user_id', $user->getId());  
+          $qb->andWhere('u.id != :id')->setParameter('id', $user->getId());  
         }
             
         $users = $qb->getQuery()->getResult();

@@ -1,0 +1,36 @@
+drosera_user_admin_user_group_list:
+    pattern:  /list
+    defaults: { _controller: DroseraUserBundle:UserGroup:list }
+
+    
+drosera_user_admin_user_group_trash:
+    pattern:  /trash
+    defaults: { _controller: DroseraUserBundle:UserGroup:trash }
+    
+drosera_user_admin_user_group_empty_trash:
+    pattern:  /emptyTrash
+    defaults: { _controller: DroseraUserBundle:UserGroup:emptyTrash }
+    
+drosera_user_admin_user_group_restore:
+    pattern:  /restore/{id}
+    defaults: { _controller: DroseraUserBundle:UserGroup:restore }
+    
+drosera_user_admin_user_group_create:
+    pattern:  /create
+    defaults: { _controller: DroseraUserBundle:UserGroup:create }
+    
+drosera_user_admin_user_group_edit:
+    pattern:  /edit/{id}
+    defaults: { _controller: DroseraUserBundle:UserGroup:edit }
+    
+drosera_user_admin_user_group_remove:
+    pattern:  /remove/{id}
+    defaults: { _controller: DroseraUserBundle:UserGroup:remove }
+    
+drosera_user_admin_user_group_delete:
+    pattern:  /delete/{id}
+    defaults: { _controller: DroseraUserBundle:UserGroup:delete }
+
+drosera_user_admin_user_group_index:
+    pattern:  /
+    defaults: { _controller: DroseraUserBundle:UserGroup:list }

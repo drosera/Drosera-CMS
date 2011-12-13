@@ -30,10 +30,62 @@ class UserGroupManager
         $this->userGroupRepository->update($userGroup);
     }
     
+    public function delete(UserGroup $userGroup, $andFlush = true)
+    {
+        $time = new \DateTime();
+        
+        if ($userGroup->getTimeTrashed() === null)
+          $userGroup->setTimeTrashed($time);  
+        
+        if ($userGroup->getTimeDeleted() === null)
+          $userGroup->setTimeDeleted($time);        
+        
+        $this->userGroupRepository->update($userGroup, $andFlush);
+    }
+    
+    public function restore(UserGroup $userGroup)
+    {
+        $userGroup->setTimeTrashed(null);                   
+        $this->userGroupRepository->update($userGroup);
+    }
+    
+    public function remove(UserGroup $userGroup)
+    {
+        $time = new \DateTime();
+        
+        if ($userGroup->getTimeTrashed() === null)
+          $userGroup->setTimeTrashed($time);           
+        
+        $this->userGroupRepository->update($userGroup);
+    }
+    
+    public function getById($id)
+    {       
+        $criteria = array('id' => intval($id), 'time_deleted' => null);
+        return $this->userGroupRepository->findOneBy($criteria); 
+    }
+    
     public function getAll()
     {
         $withSuperadmin = $this->container->get('security.context')->isGranted('ROLE_SUPERADMIN');
-        return $this->userGroupRepository->getAll($withSuperadmin); 
+        return $this->userGroupRepository->getAll(false, $withSuperadmin); 
+    }
+    
+    public function getTrashed()
+    {
+        $withSuperadmins = $this->container->get('security.context')->isGranted('ROLE_SUPERADMIN');
+        return $this->userGroupRepository->getAll(true, $withSuperadmins); 
+    }
+    
+    public function deleteTrashed()
+    {
+        $withSuperadmins = $this->container->get('security.context')->isGranted('ROLE_SUPERADMIN');
+        $trashedUserGroups = $this->userGroupRepository->getAll(true, $withSuperadmins);
+        
+        foreach ($trashedUserGroups as $userGroup)
+           $this->delete($userGroup, false); 
+        
+        $this->userGroupRepository->flush(); 
     }
     
     public function getFilterMenu()

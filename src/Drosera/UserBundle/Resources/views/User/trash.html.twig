@@ -10,13 +10,13 @@
     <a href="{{ path('drosera_user_admin_user_empty_trash') }}" onclick="return confirm('Opravdu si přejete vysypat koš?');">Vysypat koš</a> 
     <table>
         <tr>
-            <td>Login</td>
-            <td>Jméno</td>
-            <td>E-mail</td>
-            <td>Uživatelská skupina</td>
-            <td>Datum odstranění</td>
-            <td>&nbsp;</td>
-            <td>&nbsp;</td>
+            <th>Login</th>
+            <th>Jméno</th>
+            <th>E-mail</th>
+            <th>Uživatelská skupina</th>
+            <th>Čas odstranění</th>
+            <th>&nbsp;</th>
+            <th>&nbsp;</th>
         </tr>
         {% for user in users %}
             <tr>
@@ -30,15 +30,17 @@
             </tr>
         {% else %}
             <tr>
-                <td colspan="5"><em>Koš je prázdný..</em></td>
+                <td colspan="7"><em>Koš je prázdný..</em></td>
             </tr>
         {% endfor %}
         <tr>
-            <td>Login</td>
-            <td>Jméno</td>
-            <td>E-mail</td>
-            <td>Uživatelská skupina</td>
-            <td>Datum odstranění</td>
+            <th>Login</th>
+            <th>Jméno</th>
+            <th>E-mail</th>
+            <th>Uživatelská skupina</th>
+            <th>Čas odstranění</th>
+            <th>&nbsp;</th>
+            <th>&nbsp;</th>
         </tr>
     </table>
 {% endblock %}

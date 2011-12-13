@@ -3,7 +3,7 @@
 namespace Drosera\UserBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use Symfony\Component\Security\Core\User\UserInterface;
+use Drosera\UserBundle\Entity\UserGroup;
 
 class UserGroupRepository extends EntityRepository
 {
@@ -17,10 +17,20 @@ class UserGroupRepository extends EntityRepository
         }
     } 
     
-    public function getAll($withSuperadmin = false, $returnQueryBuilder = false)
+    public function flush()
+    {
+        $this->_em->flush();        
+    }
+    
+    public function getAll($trashed = false, $withSuperadmin = false, $returnQueryBuilder = false)
     {        
         $qb = $this->createQueryBuilder('ug')->where('ug.time_deleted IS NULL')->orderBy('ug.name', 'ASC');
 
+        if ($trashed)    
+            $qb->andWhere('ug.time_trashed IS NOT NULL');
+        else  
+            $qb->andWhere('ug.time_trashed IS NULL');
+        
         if (!$withSuperadmin)
            $qb->where('ug.id > 1'); 
             

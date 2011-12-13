@@ -7,6 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity
+ * @ORM\HasLifecycleCallbacks() 
  * @ORM\Entity(repositoryClass="Drosera\UserBundle\Repository\UserGroupRepository") 
  * @ORM\Table(name="user_group")
  */
@@ -33,6 +34,12 @@ class UserGroup
      * @ORM\Column(type="datetime") 
      */
     protected $time_created;
+    
+    /**
+     * @ORM\Column(type="datetime", nullable=true) 
+     */
+    protected $time_trashed;
+
     
     /**
      * @ORM\Column(type="datetime", nullable=true) 
@@ -78,6 +85,14 @@ class UserGroup
     public function getName()
     {
         return $this->name;
+    }
+    
+    /**
+     * @ORM\prePersist          
+     */
+    public function setTimeCreatedValue()
+    {
+        $this->time_created = new \DateTime();
     }
 
     /**
@@ -139,9 +154,24 @@ class UserGroup
     {
         return $this->users;
     }
-    
-    public function getUsersCount()
+
+    /**
+     * Set time_trashed
+     *
+     * @param datetime $timeTrashed
+     */
+    public function setTimeTrashed($timeTrashed)
     {
-        return count($this->users);
+        $this->time_trashed = $timeTrashed;
+    }
+
+    /**
+     * Get time_trashed
+     *
+     * @return datetime 
+     */
+    public function getTimeTrashed()
+    {
+        return $this->time_trashed;
     }
 }

@@ -4,3 +4,7 @@ drosera_user_security:
 drosera_user_user:
     resource: "@DroseraUserBundle/Resources/config/routing/user.yml"
     prefix:   /users
+
+drosera_user_user_group:
+    resource: "@DroseraUserBundle/Resources/config/routing/user_group.yml"
+    prefix:   /user-groups

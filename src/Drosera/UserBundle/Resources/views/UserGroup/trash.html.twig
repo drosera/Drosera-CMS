@@ -1,0 +1,40 @@
+{% extends 'DroseraAdminBundle::layout.html.twig' %}
+
+{% block content %}
+    <h1>Uživatelské skupiny - koš</h1>
+    {% if app.session.hasFlash('success') %}
+        <div>
+            {{ app.session.flash('success') }}
+        </div>
+    {% endif %}
+    <div>
+        {% render "DroseraUserBundle:UserGroup:filterMenu" %}
+    </div>
+    <a href="{{ path('drosera_user_admin_user_group_empty_trash') }}" onclick="return confirm('Opravdu si přejete vysypat koš?');">Vysypat koš</a> 
+    <table>
+        <tr>
+            <th>Název</th>
+            <th>Čas odstranění</th>
+            <th>&nbsp;</th>
+            <th>&nbsp;</th>
+        </tr>
+        {% for group in userGroups %}
+            <tr>
+                <td>{{ group.name }}</td>              
+                <td>{{ group.timeTrashed | date('d.m.Y H:i:s') }}</td>
+                <td><a href="{{ path('drosera_user_admin_user_group_restore', {'id':group.id}) }}">Obnovit</a></td>
+                <td><a href="{{ path('drosera_user_admin_user_group_delete', {'id':group.id}) }}" onclick="return confirm('Opravdu si přejete odstranit uživatelskou skupinu?');">Odstranit</a></td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4"><em>Koš je prázdný..</em></td>
+            </tr>
+        {% endfor %}
+        <tr>
+            <th>Název</th>
+            <th>Čas odstranění</th>
+            <th>&nbsp;</th>
+            <th>&nbsp;</th>
+        </tr>
+    </table>
+{% endblock %}

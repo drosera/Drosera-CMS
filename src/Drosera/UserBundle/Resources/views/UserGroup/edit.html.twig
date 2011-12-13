@@ -1,8 +1,8 @@
 {% extends 'DroseraAdminBundle::layout.html.twig' %}
 
 {% block content %}
-    <h1>Upravit uživatele</h1>
-    <form action="{{ path('drosera_user_admin_user_edit', {'id':user.id}) }}" method="post" {{ form_enctype(form) }}>
+    <h1>Upravit uživatelskou skupinu</h1>
+    <form action="{{ path('drosera_user_admin_user_group_edit', {'id':userGroup.id}) }}" method="post" {{ form_enctype(form) }}>
         {{ form_widget(form) }}
         <input type="submit" value="Upravit" />
     </form>

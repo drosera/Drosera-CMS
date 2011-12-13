@@ -23,12 +23,6 @@ class UserRepository extends EntityRepository
         $this->_em->flush();        
     }
     
-    public function remove(UserInterface $user)
-    {
-        $this->_em->remove($user);
-        $this->_em->flush();
-    }
-    
     public function getList($trashed = false, $withSuperadmins = false, $userGroupFilter = null)
     {          
        // snad se to takhle chova jako eager join

@@ -1,0 +1,6 @@
+<ul>
+    <li><a href="{{ path('drosera_user_admin_user_group_list') }}">Vše ({{ countAll }})</a></li>
+    {% if countTrashed > 0 %}
+        <li><a href="{{ path('drosera_user_admin_user_group_trash') }}">Koš ({{ countTrashed }})</a></li>
+    {% endif %}
+</ul>

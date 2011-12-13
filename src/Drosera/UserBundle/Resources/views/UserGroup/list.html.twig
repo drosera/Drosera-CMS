@@ -1,0 +1,40 @@
+{% extends 'DroseraAdminBundle::layout.html.twig' %}
+
+{% block content %}
+    <h1>Seznam uživatelských skupin</h1>
+    {% if app.session.hasFlash('success') %}
+        <div>
+            {{ app.session.flash('success') }}
+        </div>
+    {% endif %}
+    <div>
+        {% render "DroseraUserBundle:UserGroup:filterMenu" %}
+    </div>
+    <a href="{{ path('drosera_user_admin_user_group_create') }}">Vytvořit uživatelskou skupinu</a> 
+    <table>
+        <tr>
+            <th>Název</th>
+            <th>Počet uživatelů</th>
+            <th>&nbsp;</th>
+            <th>&nbsp;</th>
+        </tr>
+        {% for group in userGroups %}
+            <tr>
+                <td>{{ group.name }}</td>
+                <td>{{ group.users.count }}</td>
+                <td><a href="{{ path('drosera_user_admin_user_group_edit', {'id':group.id}) }}">Upravit</a></td>
+                <td>
+                    {% if true %}
+                        //todo test na uzivatele <a href="{{ path('drosera_user_admin_user_group_remove', {'id':group.id}) }}">Odstranit</a>
+                    {% endif %}    
+                </td>
+            </tr>
+        {% endfor %}
+        <tr>
+            <th>Název</th>
+            <th>Počet uživatelů</th>
+            <th>&nbsp;</th>
+            <th>&nbsp;</th>
+        </tr>
+    </table>
+{% endblock %}

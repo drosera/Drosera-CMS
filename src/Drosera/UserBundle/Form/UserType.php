@@ -6,7 +6,6 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilder;
 use Doctrine\ORM\EntityRepository;
 
-
 class UserType extends AbstractType
 {
     protected $withSuperadmin;

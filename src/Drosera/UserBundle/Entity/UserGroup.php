@@ -157,7 +157,7 @@ class UserGroup
      */
     public function getUsers()
     {
-        return $this->users;
+        return $this->users->toArray();
     }
 
     /**

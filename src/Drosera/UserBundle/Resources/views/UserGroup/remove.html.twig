@@ -1,0 +1,22 @@
+{% extends 'DroseraAdminBundle::layout.html.twig' %}
+
+{% block content %}
+    <h1>Odstranění uživatelské skupiny "{{ userGroup.name }}"</h1>
+    <em>Uživatelská skupina není prázdná! (Počet členů: {{ usersCount }})</em>
+    <form action="{{ path('drosera_user_admin_user_group_remove', {'id':userGroup.id}) }}" method="post" {{ form_enctype(form) }}>
+        <div>
+            Uživatele skupiny "{{ userGroup.name }}" 
+            {{ form_widget(form.action) }}
+            <span id="user_groups_row" style="display: none">
+                {{ form_widget(form.user_group) }}. 
+            </span>
+            {{ form_rest(form) }}
+        </div>          
+        <input type="submit" value="Provést" />
+    </form>
+{% endblock %}
+    
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('bundles/droserauser/js/user_group_remove.js') }}" type="text/javascript"></script>
+{% endblock %}

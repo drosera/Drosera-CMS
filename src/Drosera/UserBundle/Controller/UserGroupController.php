@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
 use Drosera\UserBundle\Form\UserGroupType;
+use Drosera\UserBundle\Form\UserGroupRemoveType;
 
 class UserGroupController extends Controller
 {
@@ -92,6 +93,52 @@ class UserGroupController extends Controller
                
         $this->get('session')->setFlash('success', 'Uživatelská skupina byla úspěšně obnovena!');
         return $this->redirect($this->generateUrl('drosera_user_admin_user_group_trash'));
+    }
+    
+    public function preRemoveAction(Request $request)
+    {
+        $userGroupManager = $this->get('drosera_user.user_group_manager');
+        $userGroup = $userGroupManager->getById($request->get('id'));
+        
+        $usersCount = count($userGroup->getUsers());
+        if (!$usersCount) {
+            return $this->forward('DroseraUserBundle:UserGroup:remove', array(
+                'id' => $id,
+            ));
+        }
+        
+        $isSuperadmin = $this->get('security.context')->isGranted('ROLE_SUPERADMIN');
+        $form = $this->createForm(new UserGroupRemoveType($isSuperadmin));
+        
+        if ($request->getMethod() == 'POST') {
+            $form->bindRequest($request);
+    
+            if ($form->isValid()) {                
+                $data = $form->getData();
+                $userManager = $this->get('drosera_user.user_manager');
+                switch ($data['action']) {
+                    case 1:
+                        $userManager->removeByUserGroup($userGroup);
+                        break;
+                    case 2:
+                        $users = $userGroup->getUsers();
+                        $userManager->changeUserGroup($users, $data['user_group']);
+                        break;
+                    default:
+                        break;
+                }
+                
+                return $this->forward('DroseraUserBundle:UserGroup:remove', array(
+                    'id' => $userGroup->getId(),
+                ));
+            }
+        }
+        
+        return $this->render('DroseraUserBundle:UserGroup:remove.html.twig', array(
+            'form' => $form->createView(),
+            'userGroup' => $userGroup,
+            'usersCount' => $usersCount,
+        ));
     }
     
     public function removeAction($id)

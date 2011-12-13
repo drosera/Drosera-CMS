@@ -21,14 +21,14 @@
         {% for group in userGroups %}
             <tr>
                 <td>{{ group.name }}</td>
-                <td>{{ group.users.count }}</td>
+                <td>{{ group.users | length }}</td>
                 <td>
                     {% if not(group.isSystem) %}
                         <a href="{{ path('drosera_user_admin_user_group_edit', {'id':group.id}) }}">Upravit</a></td>
                     {% endif %}
                 <td>
                     {% if not(group.isSystem) %}
-                        //todo test na uzivatele <a href="{{ path('drosera_user_admin_user_group_remove', {'id':group.id}) }}">Odstranit</a>
+                        <a href="{{ path('drosera_user_admin_user_group_remove', {'id':group.id}) }}">Odstranit</a>
                     {% endif %}    
                 </td>
             </tr>

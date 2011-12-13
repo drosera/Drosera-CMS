@@ -25,7 +25,7 @@ drosera_user_admin_user_group_edit:
     
 drosera_user_admin_user_group_remove:
     pattern:  /remove/{id}
-    defaults: { _controller: DroseraUserBundle:UserGroup:remove }
+    defaults: { _controller: DroseraUserBundle:UserGroup:preRemove }
     
 drosera_user_admin_user_group_delete:
     pattern:  /delete/{id}

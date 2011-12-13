@@ -3,6 +3,8 @@
 namespace Drosera\UserBundle\Manager;
 
 use Drosera\UserBundle\Repository\UserRepository;
+use Drosera\UserBundle\Entity\UserGroup;
+
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -44,14 +46,32 @@ class UserManager implements UserProviderInterface
         $this->userRepository->update($user);
     }
     
-    public function remove(UserInterface $user)
+    public function remove(UserInterface $user, $andFlush = true)
     {
         $time = new \DateTime();
         
         if ($user->getTimeTrashed() === null)
           $user->setTimeTrashed($time);           
         
-        $this->userRepository->update($user);
+        $this->userRepository->update($user, $andFlush);
+    }
+    
+    public function removeByUserGroup(UserGroup $userGroup)
+    {
+        foreach ($userGroup->getUsers() as $user) {
+            $this->remove($user, false);
+        }          
+        
+        $this->userRepository->flush();
+    }
+    
+    public function changeUserGroup(array $users, UserGroup $userGroup)
+    {
+        foreach ($users as $user) {
+            $user->setUserGroup($userGroup);
+        }          
+        
+        $this->userRepository->flush();
     }
     
     public function delete(UserInterface $user, $andFlush = true)

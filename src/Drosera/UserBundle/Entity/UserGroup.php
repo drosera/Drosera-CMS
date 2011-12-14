@@ -61,6 +61,11 @@ class UserGroup
     {
         return $this->getId() <= 3;
     }
+    
+    public function isAlive()
+    {
+        return $this->getTimeDeleted() === null && $this->getTimeTrashed() === null;
+    }
 
     /**
      * Get id

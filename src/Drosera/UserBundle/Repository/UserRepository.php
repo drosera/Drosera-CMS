@@ -23,7 +23,7 @@ class UserRepository extends EntityRepository
         $this->_em->flush();        
     }
     
-    public function getList($trashed = false, $withSuperadmins = false, $userGroupFilter = null)
+    public function getList($trashed = false, $withSuperadmins = false, $userGroupId = null)
     {          
        // snad se to takhle chova jako eager join
        $qb = $this->createQueryBuilder('u', 'ug')
@@ -40,9 +40,9 @@ class UserRepository extends EntityRepository
         if (!$withSuperadmins)    
             $qb->andWhere('ug.id != 1');
             
-        if ($userGroupFilter)    
+        if ($userGroupId)    
             $qb->andWhere('ug.id = :user_group')
-            ->setParameter('user_group', $userGroupFilter);
+            ->setParameter('user_group', $userGroupId);
                         
         return $qb->getQuery()->getResult();
     }  

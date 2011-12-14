@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
 use Drosera\UserBundle\Form\UserType;
+use Drosera\UserBundle\Form\UserRestoreType;
 
 
 class UserController extends Controller
@@ -13,11 +14,11 @@ class UserController extends Controller
     
     public function listAction()
     {
-        $userGroup = intval($this->get('request')->get('user_group')); 
+        $userGroupId = intval($this->get('request')->get('user_group')); 
         
         $userManager = $this->get('drosera_user.user_manager');
         $loggedUser = $this->get('security.context')->getToken()->getUser();
-        $users = $userManager->getList($userGroup);
+        $users = $userManager->getList($userGroupId);
         
         return $this->render('DroseraUserBundle:User:list.html.twig', array(
             'users' => $users,
@@ -89,6 +90,51 @@ class UserController extends Controller
         
         $this->get('session')->setFlash('success', 'Koš byl úspěšně vysypán!');       
         return $this->redirect($this->generateUrl('drosera_user_admin_user_trash'));
+    }
+    
+    public function preRestoreAction(Request $request)
+    {
+        $userManager = $this->get('drosera_user.user_manager');
+        $user = $userManager->getById($request->get('id'));
+        
+        $userGroup = $user->getUserGroup();
+        if ($userGroup->isAlive()) {
+            return $this->forward('DroseraUserBundle:User:restore', array(
+                'id' => $request->get('id'),
+            ));
+        }
+        
+        $isSuperadmin = $this->get('security.context')->isGranted('ROLE_SUPERADMIN');
+        $form = $this->createForm(new UserRestoreType($isSuperadmin));
+        
+        if ($request->getMethod() == 'POST') {
+            $form->bindRequest($request);
+    
+            if ($form->isValid()) {                
+                $data = $form->getData();
+                switch ($data['action']) {
+                    case 1:
+                        $userGroupManager = $this->get('drosera_user.user_group_manager');
+                        $userGroupManager->revive($userGroup);
+                        break;
+                    case 2:
+                        $userManager->changeUserGroup(array($user), $data['user_group']);
+                        break;
+                    default:
+                        break;
+                }
+                
+                return $this->forward('DroseraUserBundle:User:restore', array(
+                    'id' => $user->getId(),
+                ));
+            }
+        }
+        
+        return $this->render('DroseraUserBundle:User:restore.html.twig', array(
+            'form' => $form->createView(),
+            'userGroup' => $userGroup,
+            'user' => $user,
+        ));
     }
     
     public function restoreAction($id)

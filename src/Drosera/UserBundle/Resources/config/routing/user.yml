@@ -13,7 +13,7 @@ drosera_user_admin_user_empty_trash:
     
 drosera_user_admin_user_restore:
     pattern:  /restore/{id}
-    defaults: { _controller: DroseraUserBundle:User:restore }
+    defaults: { _controller: DroseraUserBundle:User:preRestore }
     
 drosera_user_admin_user_create:
     pattern:  /create

@@ -49,6 +49,13 @@ class UserGroupManager
         $this->userGroupRepository->update($userGroup);
     }
     
+    public function revive(UserGroup $userGroup)
+    {
+        $userGroup->setTimeTrashed(null); 
+        $userGroup->setTimeDeleted(null); 
+        $this->userGroupRepository->update($userGroup);
+    }
+    
     public function remove(UserGroup $userGroup)
     {
         $time = new \DateTime();

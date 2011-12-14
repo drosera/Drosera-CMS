@@ -87,10 +87,10 @@ class UserManager implements UserProviderInterface
         $this->userRepository->update($user, $andFlush);
     }
     
-    public function getList($userGroup = null)
+    public function getList($userGroupId = null)
     {
         $withSuperadmins = $this->container->get('security.context')->isGranted('ROLE_SUPERADMIN');
-        return $this->userRepository->getList(false, $withSuperadmins, $userGroup); 
+        return $this->userRepository->getList(false, $withSuperadmins, $userGroupId); 
     }
     
     public function getTrashed()

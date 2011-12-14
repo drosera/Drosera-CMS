@@ -1,0 +1,22 @@
+{% extends 'DroseraAdminBundle::layout.html.twig' %}
+
+{% block content %}
+    <h1>Odstranění uživatele "{{ user.fullName }}"</h1>
+    <em>Uživatel je přiřazena uživatelská skupina "{{ userGroup.name }}", která již byla odstraněna!</em>
+    <form action="{{ path('drosera_user_admin_user_restore', {'id':user.id}) }}" method="post" {{ form_enctype(form) }}>
+        <div>
+            Obnovit uživatele 
+            {{ form_widget(form.action) }}
+            <span id="user_groups_row" style="display: none">
+                {{ form_widget(form.user_group) }} 
+            </span>.
+            {{ form_rest(form) }}
+        </div>          
+        <input type="submit" value="Provést" />
+    </form>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('bundles/droserauser/js/user_restore.js') }}" type="text/javascript"></script>
+{% endblock %}

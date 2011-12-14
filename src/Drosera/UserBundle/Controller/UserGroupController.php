@@ -100,10 +100,12 @@ class UserGroupController extends Controller
         $userGroupManager = $this->get('drosera_user.user_group_manager');
         $userGroup = $userGroupManager->getById($request->get('id'));
         
-        $usersCount = count($userGroup->getUsers());
+        $userManager = $this->get('drosera_user.user_manager');
+        $users = $userManager->getList($userGroup->getId());
+        $usersCount = count($users);
         if (!$usersCount) {
             return $this->forward('DroseraUserBundle:UserGroup:remove', array(
-                'id' => $id,
+                'id' => $request->get('id'),
             ));
         }
         
@@ -121,7 +123,6 @@ class UserGroupController extends Controller
                         $userManager->removeByUserGroup($userGroup);
                         break;
                     case 2:
-                        $users = $userGroup->getUsers();
                         $userManager->changeUserGroup($users, $data['user_group']);
                         break;
                     default:

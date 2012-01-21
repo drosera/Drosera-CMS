@@ -7,6 +7,9 @@
             {{ app.session.flash('success') }}
         </div>
     {% endif %}
+    <div>
+        {% render "DroseraUserBundle:User:filterMenu" with {'withTrash' : false} %}
+    </div>
     <a href="{{ path('drosera_user_admin_user_empty_trash') }}" onclick="return confirm('Opravdu si přejete vysypat koš?');">Vysypat koš</a> 
     <table>
         <tr>

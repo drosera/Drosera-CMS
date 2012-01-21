@@ -159,9 +159,8 @@ class UserManager implements UserProviderInterface
      * Implements UserProviderInterface
      */ 
     public function loadUserByUsername($username)
-    {
-        $criteria = array('username' => $username, 'active' => true,'time_trashed' => null, 'time_deleted' => null);
-        $user = $this->userRepository->findOneBy($criteria);
+    {   
+        $user = $this->userRepository->loadUserForLogin($username);
         
         if (!$user) {
             throw new UsernameNotFoundException(sprintf('No user with name "%s" was found.', $username));

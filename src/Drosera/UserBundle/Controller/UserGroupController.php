@@ -110,7 +110,7 @@ class UserGroupController extends Controller
         }
         
         $isSuperadmin = $this->get('security.context')->isGranted('ROLE_SUPERADMIN');
-        $form = $this->createForm(new UserGroupRemoveType($isSuperadmin));
+        $form = $this->createForm(new UserGroupRemoveType($userGroup, $isSuperadmin));
         
         if ($request->getMethod() == 'POST') {
             $form->bindRequest($request);
@@ -164,11 +164,11 @@ class UserGroupController extends Controller
         return $this->redirect($this->generateUrl('drosera_user_admin_user_group_trash'));
     }
     
-    public function filterMenuAction()
+    public function filterMenuAction($withTrash = true)
     {
         $userGroupManager = $this->get('drosera_user.user_group_manager');
         $countAll = count($userGroupManager->getAll());
-        $countTrashed = count($userGroupManager->getTrashed());
+        $countTrashed = $withTrash ? count($userGroupManager->getTrashed()) : 0;
         
         return $this->render('DroseraUserBundle:UserGroup:filterMenu.html.twig', array(
             'countAll' => $countAll,

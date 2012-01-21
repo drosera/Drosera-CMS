@@ -170,11 +170,11 @@ class UserController extends Controller
         return $this->redirect($this->generateUrl('drosera_user_admin_user_trash'));
     }
     
-    public function filterMenuAction()
+    public function filterMenuAction($withTrash = true)
     {
         $userManager = $this->get('drosera_user.user_manager');
         $countAll = count($userManager->getList());
-        $countTrashed = count($userManager->getTrashed());
+        $countTrashed = $withTrash ? count($userManager->getTrashed()) : 0;
         
         $userGroupManager = $this->get('drosera_user.user_group_manager');
         $userGroups = $userGroupManager->getFilterMenu();

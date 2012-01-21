@@ -9,9 +9,11 @@ use Doctrine\ORM\EntityRepository;
 class UserGroupRemoveType extends AbstractType
 {
     protected $withSuperadmin;
+    protected $userGroup;
 
-    function __construct($withSuperadmin = false) {
+    function __construct($userGroup, $withSuperadmin = false) {
         $this->withSuperadmin = $withSuperadmin;
+        $this->userGroup = $userGroup;
     }
     
     public function buildForm(FormBuilder $builder, array $options)
@@ -22,10 +24,11 @@ class UserGroupRemoveType extends AbstractType
         ));
         
         $withSuperadmin = $this->withSuperadmin;
+        $userGroup = $this->userGroup;
         $builder->add('user_group', 'entity', array(
             'class' => 'DroseraUserBundle:UserGroup',
-            'query_builder' => function(EntityRepository $er) use ($withSuperadmin) {
-                return $er->getAll(false, $withSuperadmin, true);
+            'query_builder' => function(EntityRepository $er) use ($userGroup, $withSuperadmin) {
+                return $er->getAllExceptOne($userGroup, false, $withSuperadmin, true);
             },
         ));
     }

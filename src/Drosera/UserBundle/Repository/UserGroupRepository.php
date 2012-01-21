@@ -38,6 +38,21 @@ class UserGroupRepository extends EntityRepository
         return $returnQueryBuilder ? $qb : $qb->getQuery()->getResult();
     }
     
+    public function getAllExceptOne($userGroup, $trashed = false, $withSuperadmin = false, $returnQueryBuilder = false)
+    {        
+        $qb = $this->createQueryBuilder('ug')->where('ug.id != :except_id')->setParameter('except_id', $userGroup->getId())->andWhere('ug.time_deleted IS NULL')->orderBy('ug.name', 'ASC');
+
+        if ($trashed)    
+            $qb->andWhere('ug.time_trashed IS NOT NULL');
+        else  
+            $qb->andWhere('ug.time_trashed IS NULL');
+        
+        if (!$withSuperadmin)
+           $qb->where('ug.id > 1'); 
+            
+        return $returnQueryBuilder ? $qb : $qb->getQuery()->getResult();
+    }
+    
     public function getFilterMenu($withSuperadmin = false)
     {        
         $query = 'SELECT ug, count(u.id) AS countUsers 

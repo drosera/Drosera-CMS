@@ -66,5 +66,19 @@ class UserRepository extends EntityRepository
         $users = $qb->getQuery()->getResult();
    
         return (boolean) !count($users);
-    }      
+    } 
+    
+    public function loadUserForLogin($username)
+    {
+       $qb = $this->createQueryBuilder('u')
+           ->join('u.user_group', 'ug', 'WITH', 'ug.id != 3')
+           ->where('u.username = :username')
+           ->setParameter('username', $username)
+           ->andWhere('u.active = TRUE')   
+           ->andWhere('u.time_trashed IS NULL')
+           ->andWhere('u.time_deleted IS NULL');
+       
+       $res = $qb->getQuery()->getResult();
+       return count($res) ? $res[0] : null;       
+    }
 }

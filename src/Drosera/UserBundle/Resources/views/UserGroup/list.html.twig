@@ -21,7 +21,12 @@
         {% for group in userGroups %}
             <tr>
                 <td>{{ group.name }}</td>
-                <td>{{ group.users | length }}</td>
+                <td>
+                    {% if (group.users | length) %}
+                        <a href="{{ path('drosera_user_admin_user_list', {'user_group':group.id}) }}">{{ group.users | length }}</a></td>
+                    {% else %}
+                        {{ group.users | length }}
+                    {% endif %}
                 <td>
                     {% if not(group.isSystem) %}
                         <a href="{{ path('drosera_user_admin_user_group_edit', {'id':group.id}) }}">Upravit</a></td>

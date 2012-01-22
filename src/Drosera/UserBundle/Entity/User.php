@@ -150,9 +150,10 @@ class User implements UserInterface
         */
         
         $roles = array();
-        $groupId = $this->getUserGroup()->getId();
         
-        switch ($groupId) {
+        $roles[] = $this->getUserGroup()->getRoleName();
+        
+        switch ($this->getUserGroup()->getId()) {
             case 1:
                 $roles[] = 'ROLE_SUPERADMIN';
             case 2:

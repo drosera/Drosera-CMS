@@ -66,6 +66,11 @@ class UserGroup
     {
         return $this->getTimeDeleted() === null && $this->getTimeTrashed() === null;
     }
+    
+    public function getRoleName()
+    {
+        return 'ROLE_'.$this->getId();
+    }
 
     /**
      * Get id

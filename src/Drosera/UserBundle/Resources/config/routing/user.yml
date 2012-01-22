@@ -1,7 +1,10 @@
+drosera_user_admin_credentials:
+    pattern:  /credentials
+    defaults: { _controller: DroseraUserBundle:Credential:credentials }
+
 drosera_user_admin_user_list:
     pattern:  /list
     defaults: { _controller: DroseraUserBundle:User:list }
-
     
 drosera_user_admin_user_trash:
     pattern:  /trash

@@ -1,0 +1,27 @@
+# bundle services
+- { resource: @DroseraUserBundle/Resources/config/services.yml }
+
+parameters:
+  user_bundle.credentials:
+    - name: users
+      label: Uživatelé
+      subcredentials:
+        - name: view
+          title: Zobrazit
+        - name: edit
+          title: Editovat
+        - name: create
+          title: Vytvořit
+        - name: delete
+          title: Odstranit
+    - name: user_groups
+      label: Uživatelské skupiny
+      subcredentials:
+        - name: view
+          title: Zobrazit
+        - name: edit
+          title: Editovat
+        - name: create
+          title: Vytvořit
+        - name: delete
+          title: Odstranit

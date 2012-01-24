@@ -1,8 +1,8 @@
 imports:
     - { resource: parameters.ini }
-    - { resource: security.yml }    
+    - { resource: security.yml }
     user_bundle:
-        resource: @DroseraUserBundle/Resources/config/services.yml
+        resource: @DroseraUserBundle/Resources/config/config.yml
 
 framework:
     #esi:             ~

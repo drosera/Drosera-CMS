@@ -1,3 +1,11 @@
+drosera_user_admin_credentials_grant:
+    pattern:  /credentials/grant
+    defaults: { _controller: DroseraUserBundle:Credential:grant }
+    
+drosera_user_admin_credentials_revoke:
+    pattern:  /credentials/revoke
+    defaults: { _controller: DroseraUserBundle:Credential:revoke }
+
 drosera_user_admin_credentials:
     pattern:  /credentials
     defaults: { _controller: DroseraUserBundle:Credential:credentials }

@@ -8,9 +8,13 @@ use Doctrine\ORM\EntityRepository;
 
 class CredentialType extends AbstractType
 {
+    protected $grantUrl;
+    protected $revokeUrl;
     protected $withSuperadmin;
 
-    function __construct($withSuperadmin = false) {
+    function __construct($grantUrl, $revokeUrl, $withSuperadmin = false) {
+        $this->grantUrl = $grantUrl;
+        $this->revokeUrl = $revokeUrl;
         $this->withSuperadmin = $withSuperadmin;
     }
     
@@ -23,27 +27,10 @@ class CredentialType extends AbstractType
             'query_builder' => function(EntityRepository $er) use ($withSuperadmin) {
                 return $er->getAllExceptOne(3, false, $withSuperadmin, true);
             },
-        ));
-            
-        $builder->add('user_view', 'checkbox', array(
-            'label'     => 'Zobrazit',
-            'required'  => false,
-        ));
-        
-        $builder->add('user_edit', 'checkbox', array(
-            'label'     => 'Upravit',
-            'required'  => false,
-        ));
-        
-        $builder->add('user_create', 'checkbox', array(
-            'label'     => 'Vytvořit',
-            'required'  => false,
-        ));
-        
-        $builder->add('user_delete', 'checkbox', array(
-            'label'     => 'Odstranit',
-            'required'  => false,
-        ));
+        )); 
+                 
+        $builder->add('grantUrl', 'hidden', array('data' => $this->grantUrl, 'property_path' => false));
+        $builder->add('revokeUrl', 'hidden', array('data' => $this->revokeUrl, 'property_path' => false));
     }
     
     public function getDefaultOptions(array $options)

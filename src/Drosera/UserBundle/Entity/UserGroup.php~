@@ -7,6 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity
+ * @ORM\HasLifecycleCallbacks() 
  * @ORM\Entity(repositoryClass="Drosera\UserBundle\Repository\UserGroupRepository") 
  * @ORM\Table(name="user_group")
  */
@@ -30,6 +31,11 @@ class UserGroup
     protected $users;
     
     /**
+     * @ORM\OneToMany(targetEntity="Credential", mappedBy="user_group")
+     */
+    protected $credentials;
+    
+    /**
      * @ORM\Column(type="datetime") 
      */
     protected $time_created;
@@ -48,12 +54,24 @@ class UserGroup
     
     public function __construct()
     {
-      $this->users = new ArrayCollection();  
+        $this->users = new ArrayCollection();
+        $this->credentials = new ArrayCollection();
+        
     }
 
     public function __toString()
     {
         return $this->getName();
+    }
+    
+    public function isSystem()
+    {
+        return $this->getId() <= 3;
+    }
+    
+    public function isAlive()
+    {
+        return $this->getTimeDeleted() === null && $this->getTimeTrashed() === null;
     }
 
     /**
@@ -84,6 +102,14 @@ class UserGroup
     public function getName()
     {
         return $this->name;
+    }
+    
+    /**
+     * @ORM\prePersist          
+     */
+    public function setTimeCreatedValue()
+    {
+        $this->time_created = new \DateTime();
     }
 
     /**
@@ -143,11 +169,26 @@ class UserGroup
      */
     public function getUsers()
     {
-        return $this->users;
+        return $this->users->toArray();
     }
-    
-    public function getUsersCount()
+
+    /**
+     * Set time_trashed
+     *
+     * @param datetime $timeTrashed
+     */
+    public function setTimeTrashed($timeTrashed)
     {
-        return count($this->users);
+        $this->time_trashed = $timeTrashed;
+    }
+
+    /**
+     * Get time_trashed
+     *
+     * @return datetime 
+     */
+    public function getTimeTrashed()
+    {
+        return $this->time_trashed;
     }
 }

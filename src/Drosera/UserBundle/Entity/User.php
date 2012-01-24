@@ -149,10 +149,8 @@ class User implements UserInterface
         return array_unique($roles);
         */
         
-        $roles = array();
-        
-        $roles[] = $this->getUserGroup()->getRoleName();
-        
+        $roles = $this->getUserGroup()->getRoles();
+                
         switch ($this->getUserGroup()->getId()) {
             case 1:
                 $roles[] = 'ROLE_SUPERADMIN';

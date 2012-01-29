@@ -78,7 +78,8 @@ class UserRepository extends EntityRepository
            ->andWhere('u.time_trashed IS NULL')
            ->andWhere('u.time_deleted IS NULL');
        
-       $res = $qb->getQuery()->getResult();
-       return count($res) ? $res[0] : null;       
+       $query = $qb->getQuery();
+       $res = $query->getSingleResult();
+       return $res;       
     }
 }

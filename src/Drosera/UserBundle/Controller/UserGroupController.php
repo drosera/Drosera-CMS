@@ -8,8 +8,13 @@ use Symfony\Component\HttpFoundation\Request;
 use Drosera\UserBundle\Form\UserGroupType;
 use Drosera\UserBundle\Form\UserGroupRemoveType;
 
+use JMS\SecurityExtraBundle\Annotation\PreAuthorize;
+
 class UserGroupController extends Controller
 {
+    /**
+     *  @PreAuthorize("hasRole('ROLE_USER_GROUPS_VIEW')") 
+     */
     public function listAction() 
     {        
         $userGroupManager = $this->get('drosera_user.user_group_manager');
@@ -20,6 +25,9 @@ class UserGroupController extends Controller
         ));
     }
     
+    /**
+     *  @PreAuthorize("hasRole('ROLE_USER_GROUPS_VIEW')") 
+     */
     public function trashAction()
     {
         $userGroupManager = $this->get('drosera_user.user_group_manager');
@@ -30,6 +38,9 @@ class UserGroupController extends Controller
         ));
     }
     
+    /**
+     *  @PreAuthorize("hasRole('ROLE_USER_GROUPS_CREATE')") 
+     */
     public function createAction(Request $request)
     {
         $userGroupManager = $this->get('drosera_user.user_group_manager');
@@ -52,6 +63,9 @@ class UserGroupController extends Controller
         ));
     }
     
+    /**
+     *  @PreAuthorize("hasRole('ROLE_USER_GROUPS_EDIT')") 
+     */
     public function editAction(Request $request)
     {
         $userGroupManager = $this->get('drosera_user.user_group_manager');
@@ -75,6 +89,9 @@ class UserGroupController extends Controller
         ));
     }
     
+    /**
+     *  @PreAuthorize("hasRole('ROLE_USER_GROUPS_DELETE')") 
+     */
     public function emptyTrashAction()
     {
         $userGroupManager = $this->get('drosera_user.user_group_manager');        
@@ -84,6 +101,9 @@ class UserGroupController extends Controller
         return $this->redirect($this->generateUrl('drosera_user_admin_user_group_trash'));
     }
     
+    /**
+     *  @PreAuthorize("hasRole('ROLE_USER_GROUPS_CREATE')") 
+     */
     public function restoreAction($id)
     {
         $userGroupManager = $this->get('drosera_user.user_group_manager');
@@ -95,6 +115,9 @@ class UserGroupController extends Controller
         return $this->redirect($this->generateUrl('drosera_user_admin_user_group_trash'));
     }
     
+    /**
+     *  @PreAuthorize("hasRole('ROLE_USER_GROUPS_DELETE')") 
+     */
     public function preRemoveAction(Request $request)
     {
         $userGroupManager = $this->get('drosera_user.user_group_manager');
@@ -142,6 +165,9 @@ class UserGroupController extends Controller
         ));
     }
     
+    /**
+     *  @PreAuthorize("hasRole('ROLE_USER_GROUPS_DELETE')") 
+     */
     public function removeAction($id)
     {
         $userGroupManager = $this->get('drosera_user.user_group_manager');
@@ -153,6 +179,9 @@ class UserGroupController extends Controller
         return $this->redirect($this->generateUrl('drosera_user_admin_user_group_list'));
     }
     
+    /**
+     *  @PreAuthorize("hasRole('ROLE_USER_GROUPS_DELETE')") 
+     */
     public function deleteAction($id)
     {
         $userGroupManager = $this->get('drosera_user.user_group_manager');
@@ -164,6 +193,9 @@ class UserGroupController extends Controller
         return $this->redirect($this->generateUrl('drosera_user_admin_user_group_trash'));
     }
     
+    /**
+     *  @PreAuthorize("hasRole('ROLE_USER_GROUPS_VIEW')") 
+     */
     public function filterMenuAction($withTrash = true)
     {
         $userGroupManager = $this->get('drosera_user.user_group_manager');

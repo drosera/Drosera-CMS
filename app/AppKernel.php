@@ -20,6 +20,8 @@ class AppKernel extends Kernel
             new Drosera\AdminBundle\DroseraAdminBundle(),
             new Drosera\UserBundle\DroseraUserBundle(),
             new Acme\DemoBundle\AcmeDemoBundle(),
+            new JMS\AopBundle\JMSAopBundle(),
+            new JMS\DiExtraBundle\JMSDiExtraBundle($this),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

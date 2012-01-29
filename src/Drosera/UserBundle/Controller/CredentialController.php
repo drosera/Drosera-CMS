@@ -11,33 +11,13 @@ use Symfony\Component\Security\Acl\Permission\MaskBuilder;
 
 use Drosera\UserBundle\Form\CredentialType;
 
-class CredentialController extends Controller
-{    
-    public function credentials2Action(Request $request)
-    {        
-        $isSuperadmin = $this->get('security.context')->isGranted('ROLE_SUPERADMIN');
-        $form = $this->createForm(new CredentialType($isSuperadmin));
-        
-        if ($request->getMethod() == 'POST') {
-            $form->bindRequest($request);
-            
-            if ($form->isValid()) {
-                $data = $form->getData();
-                
-                                
-                
-                $this->get('session')->setFlash('success', 'Práva byla úspěšně nastvena!');  
-                return $this->redirect($this->generateUrl('drosera_user_admin_credentials'));
-            }
-        }
+use JMS\SecurityExtraBundle\Annotation\PreAuthorize;
 
-        
-        //var_dump($this->container->getParameter('user_bundle'));
-        return $this->render('DroseraUserBundle:Credential:credentials.html.twig', array(
-            'form' => $form->createView(),
-        ));
-    }
-    
+class CredentialController extends Controller
+{   
+    /**
+     *  @PreAuthorize("hasRole('ROLE_ADMIN')") 
+     */
     public function credentialsAction()
     {                 
         $revokeUrl = $this->get('router')->generate('drosera_user_admin_credentials_revoke');
@@ -65,6 +45,9 @@ class CredentialController extends Controller
         ));
     }
     
+    /**
+     *  @PreAuthorize("hasRole('ROLE_ADMIN')") 
+     */
     public function grantAction(Request $request)
     {  
         if ($request->getMethod() == 'POST' && $this->get('request')->isXmlHttpRequest())
@@ -80,6 +63,9 @@ class CredentialController extends Controller
         } 
     }
     
+    /**
+     *  @PreAuthorize("hasRole('ROLE_ADMIN')") 
+     */
     public function revokeAction(Request $request)
     {  
         if ($request->getMethod() == 'POST' && $this->get('request')->isXmlHttpRequest())

@@ -59,5 +59,9 @@ swiftmailer:
     password:  %mailer_password%
 
 jms_security_extra:
-    secure_controllers:  true
     secure_all_services: false
+    enable_iddqd_attribute: true
+    expressions: true
+    
+jms_aop:
+    cache_dir: %kernel.cache_dir%/jms_aop

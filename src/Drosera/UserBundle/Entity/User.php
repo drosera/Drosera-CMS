@@ -225,7 +225,7 @@ class User implements UserInterface
         if (!$user instanceof User) {
             return false;
         }
-        
+
         if ($this->username !== $user->getUsername()) {
             return false;
         }

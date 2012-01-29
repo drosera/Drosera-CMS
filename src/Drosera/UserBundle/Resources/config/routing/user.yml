@@ -14,6 +14,12 @@ drosera_user_admin_user_list:
     pattern:  /list
     defaults: { _controller: DroseraUserBundle:User:list }
     
+drosera_user_admin_user_detail:
+    pattern:  /detail/{id}
+    defaults: { _controller: DroseraUserBundle:User:detail }
+    requirements:
+        id:  \d+
+    
 drosera_user_admin_user_trash:
     pattern:  /trash
     defaults: { _controller: DroseraUserBundle:User:trash }

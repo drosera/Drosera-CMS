@@ -2,6 +2,11 @@ drosera_user_admin_user_group_list:
     pattern:  /list
     defaults: { _controller: DroseraUserBundle:UserGroup:list }
 
+drosera_user_admin_user_group_detail:
+    pattern:  /detail/{id}
+    defaults: { _controller: DroseraUserBundle:UserGroup:detail }
+    requirements:
+        id:  \d+
     
 drosera_user_admin_user_group_trash:
     pattern:  /trash

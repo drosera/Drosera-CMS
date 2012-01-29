@@ -28,6 +28,19 @@ class UserGroupController extends Controller
     /**
      *  @PreAuthorize("hasRole('ROLE_USER_GROUPS_VIEW')") 
      */
+    public function detailAction($id)
+    {        
+        $userGroupManager = $this->get('drosera_user.user_group_manager');
+        $userGroup = $userGroupManager->getById($id);
+        
+        return $this->render('DroseraUserBundle:UserGroup:detail.html.twig', array(
+            'userGroup' => $userGroup,
+        ));
+    }
+    
+    /**
+     *  @PreAuthorize("hasRole('ROLE_USER_GROUPS_VIEW')") 
+     */
     public function trashAction()
     {
         $userGroupManager = $this->get('drosera_user.user_group_manager');

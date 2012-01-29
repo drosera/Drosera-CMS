@@ -19,21 +19,29 @@
             <th>Jméno</th>
             <th>E-mail</th>
             <th>Uživatelská skupina</th>
-            {% if is_expr_granted("hasRole('ROLE_USERS_EDIT')") %}
-                <th>&nbsp;</th>
-            {% endif %}
+            <th>&nbsp;</th>
             {% if is_expr_granted("hasRole('ROLE_USERS_DELETE')") %}
                 <th>&nbsp;</th>
             {% endif %}
         </tr>
         {% for user in users %}
             <tr>
-                <td><a href="{{ path('drosera_user_admin_user_edit', {'id':user.id}) }}">{{ user.username }}</a></td>
-                <td><a href="{{ path('drosera_user_admin_user_edit', {'id':user.id}) }}">{{ user.fullname }}</a></td>
+                {% if is_expr_granted("hasRole('ROLE_USERS_EDIT')") %}
+                    <td><a href="{{ path('drosera_user_admin_user_edit', {'id':user.id}) }}">{{ user.username }}</a></td>
+                {% else %}
+                    <td><a href="{{ path('drosera_user_admin_user_detail', {'id':user.id}) }}">{{ user.username }}</a></td>
+                {% endif %}
+                {% if is_expr_granted("hasRole('ROLE_USERS_EDIT')") %}
+                    <td><a href="{{ path('drosera_user_admin_user_edit', {'id':user.id}) }}">{{ user.fullname }}</a></td>
+                {% else %}
+                    <td><a href="{{ path('drosera_user_admin_user_detail', {'id':user.id}) }}">{{ user.fullname }}</a></td>
+                {% endif %}
                 <td>{{ user.email }}</td>
                 <td><a href="{{ path('drosera_user_admin_user_list', {'user_group':user.usergroup.id}) }}">{{ user.usergroup }}</a></td>
                 {% if is_expr_granted("hasRole('ROLE_USERS_EDIT')") %}
                     <td><a href="{{ path('drosera_user_admin_user_edit', {'id':user.id}) }}">Upravit</a></td>
+                {% else %}
+                    <td><a href="{{ path('drosera_user_admin_user_detail', {'id':user.id}) }}">Detail</a></td>
                 {% endif %}
                 {% if is_expr_granted("hasRole('ROLE_USERS_DELETE')") %}
                     <td>
@@ -49,9 +57,7 @@
             <th>Jméno</th>
             <th>E-mail</th>
             <th>Uživatelská skupina</th>
-            {% if is_expr_granted("hasRole('ROLE_USERS_EDIT')") %}
-                <th>&nbsp;</th>
-            {% endif %}
+            <th>&nbsp;</th>
             {% if is_expr_granted("hasRole('ROLE_USERS_DELETE')") %}
                 <th>&nbsp;</th>
             {% endif %}

@@ -33,6 +33,19 @@ class UserController extends Controller
     /**
      *  @PreAuthorize("hasRole('ROLE_USERS_VIEW')") 
      */
+    public function detailAction($id)
+    {        
+        $userManager = $this->get('drosera_user.user_manager');
+        $user = $userManager->getById($id);
+        
+        return $this->render('DroseraUserBundle:User:detail.html.twig', array(
+            'user' => $user,
+        ));
+    }
+    
+    /**
+     *  @PreAuthorize("hasRole('ROLE_USERS_VIEW')") 
+     */
     public function trashAction()
     {
         $userManager = $this->get('drosera_user.user_manager');

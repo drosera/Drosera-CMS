@@ -17,28 +17,29 @@
         <tr>
             <th>Název</th>
             <th>Počet uživatelů</th>
-            {% if is_expr_granted("hasRole('ROLE_USER_GROUPS_EDIT')") %}
-                <th>&nbsp;</th>
-            {% endif %}
+            <th>&nbsp;</th>
             {% if is_expr_granted("hasRole('ROLE_USER_GROUPS_DELETE')") %}
                 <th>&nbsp;</th>
             {% endif %}
         </tr>
         {% for group in userGroups %}
             <tr>
-                <td>{{ group.name }}</td>
+                {% if is_expr_granted("hasRole('ROLE_USER_GROUPS_EDIT')") %}
+                    <td><a href="{{ path('drosera_user_admin_user_group_edit', {'id':group.id}) }}">{{ group.name }}</a></td>
+                {% else %}
+                    <td><a href="{{ path('drosera_user_admin_user_group_detail', {'id':group.id}) }}">{{ group.name }}</a></td>
+                {% endif %}
                 <td>
-                    {% if (group.users | length) %}
-                        <a href="{{ path('drosera_user_admin_user_list', {'user_group':group.id}) }}">{{ group.users | length }}</a></td>
+                    {% if (group.users | length) and is_expr_granted("hasRole('ROLE_USERS_VIEW')") %}
+                        <a href="{{ path('drosera_user_admin_user_list', {'user_group':group.id}) }}">{{ group.users | length }}</a>
                     {% else %}
                         {{ group.users | length }}
                     {% endif %}
-                {% if is_expr_granted("hasRole('ROLE_USER_GROUPS_EDIT')") %}
-                    <td>
-                        {% if not(group.isSystem) %}
-                            <a href="{{ path('drosera_user_admin_user_group_edit', {'id':group.id}) }}">Upravit</a>
-                        {% endif %}
-                    </td>
+                </td>
+                {% if is_expr_granted("hasRole('ROLE_USER_GROUPS_EDIT')") and not(group.isSystem)  %}
+                    <td><a href="{{ path('drosera_user_admin_user_group_edit', {'id':group.id}) }}">Upravit</a></td>
+                {% else %}
+                    <td><a href="{{ path('drosera_user_admin_user_group_detail', {'id':group.id}) }}">Detail</a></td>
                 {% endif %}
                 {% if is_expr_granted("hasRole('ROLE_USER_GROUPS_DELETE')") %}
                     <td>
@@ -52,9 +53,7 @@
         <tr>
             <th>Název</th>
             <th>Počet uživatelů</th>
-            {% if is_expr_granted("hasRole('ROLE_USER_GROUPS_EDIT')") %}
-                <th>&nbsp;</th>
-            {% endif %}
+            <th>&nbsp;</th>
             {% if is_expr_granted("hasRole('ROLE_USER_GROUPS_DELETE')") %}
                 <th>&nbsp;</th>
             {% endif %}

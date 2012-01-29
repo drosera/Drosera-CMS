@@ -10,13 +10,19 @@
     <div>
         {% render "DroseraUserBundle:UserGroup:filterMenu" %}
     </div>
-    <a href="{{ path('drosera_user_admin_user_group_create') }}">Vytvořit uživatelskou skupinu</a> 
+    {% if is_expr_granted("hasRole('ROLE_USER_GROUPS_CREATE')") %}
+        <a href="{{ path('drosera_user_admin_user_group_create') }}">Vytvořit uživatelskou skupinu</a> 
+    {% endif %}
     <table>
         <tr>
             <th>Název</th>
             <th>Počet uživatelů</th>
-            <th>&nbsp;</th>
-            <th>&nbsp;</th>
+            {% if is_expr_granted("hasRole('ROLE_USER_GROUPS_EDIT')") %}
+                <th>&nbsp;</th>
+            {% endif %}
+            {% if is_expr_granted("hasRole('ROLE_USER_GROUPS_DELETE')") %}
+                <th>&nbsp;</th>
+            {% endif %}
         </tr>
         {% for group in userGroups %}
             <tr>
@@ -27,22 +33,31 @@
                     {% else %}
                         {{ group.users | length }}
                     {% endif %}
-                <td>
-                    {% if not(group.isSystem) %}
-                        <a href="{{ path('drosera_user_admin_user_group_edit', {'id':group.id}) }}">Upravit</a></td>
-                    {% endif %}
-                <td>
-                    {% if not(group.isSystem) %}
-                        <a href="{{ path('drosera_user_admin_user_group_remove', {'id':group.id}) }}">Odstranit</a>
-                    {% endif %}    
-                </td>
+                {% if is_expr_granted("hasRole('ROLE_USER_GROUPS_EDIT')") %}
+                    <td>
+                        {% if not(group.isSystem) %}
+                            <a href="{{ path('drosera_user_admin_user_group_edit', {'id':group.id}) }}">Upravit</a>
+                        {% endif %}
+                    </td>
+                {% endif %}
+                {% if is_expr_granted("hasRole('ROLE_USER_GROUPS_DELETE')") %}
+                    <td>
+                        {% if not(group.isSystem) %}
+                            <a href="{{ path('drosera_user_admin_user_group_remove', {'id':group.id}) }}">Odstranit</a>
+                        {% endif %}    
+                    </td>
+                {% endif %}
             </tr>
         {% endfor %}
         <tr>
             <th>Název</th>
             <th>Počet uživatelů</th>
-            <th>&nbsp;</th>
-            <th>&nbsp;</th>
+            {% if is_expr_granted("hasRole('ROLE_USER_GROUPS_EDIT')") %}
+                <th>&nbsp;</th>
+            {% endif %}
+            {% if is_expr_granted("hasRole('ROLE_USER_GROUPS_DELETE')") %}
+                <th>&nbsp;</th>
+            {% endif %}
         </tr>
     </table>
 {% endblock %}

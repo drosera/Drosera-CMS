@@ -10,20 +10,32 @@
     <div>
         {% render "DroseraUserBundle:UserGroup:filterMenu" with {'withTrash' : false} %}
     </div>
-    <a href="{{ path('drosera_user_admin_user_group_empty_trash') }}" onclick="return confirm('Opravdu si přejete vysypat koš?');">Vysypat koš</a> 
+    {% if is_expr_granted("hasRole('ROLE_USER_GROUPS_DELETE')") %}
+        {% if userGroups | length %}
+            <a href="{{ path('drosera_user_admin_user_group_empty_trash') }}" onclick="return confirm('Opravdu si přejete vysypat koš?');">Vysypat koš</a> 
+        {% endif %}
+{% endif %}
     <table>
         <tr>
             <th>Název</th>
             <th>Čas odstranění</th>
-            <th>&nbsp;</th>
-            <th>&nbsp;</th>
+            {% if is_expr_granted("hasRole('ROLE_USER_GROUPS_CREATE')") %}
+                <th>&nbsp;</th>
+            {% endif %}
+            {% if is_expr_granted("hasRole('ROLE_USER_GROUPS_DELETE')") %}
+                <th>&nbsp;</th>
+            {% endif %}
         </tr>
         {% for group in userGroups %}
             <tr>
                 <td>{{ group.name }}</td>              
                 <td>{{ group.timeTrashed | date('d.m.Y H:i:s') }}</td>
-                <td><a href="{{ path('drosera_user_admin_user_group_restore', {'id':group.id}) }}">Obnovit</a></td>
-                <td><a href="{{ path('drosera_user_admin_user_group_delete', {'id':group.id}) }}" onclick="return confirm('Opravdu si přejete odstranit uživatelskou skupinu?');">Odstranit</a></td>
+                {% if is_expr_granted("hasRole('ROLE_USER_GROUPS_CREATE')") %}
+                    <td><a href="{{ path('drosera_user_admin_user_group_restore', {'id':group.id}) }}">Obnovit</a></td>
+                {% endif %}
+                {% if is_expr_granted("hasRole('ROLE_USER_GROUPS_DELETE')") %}
+                    <td><a href="{{ path('drosera_user_admin_user_group_delete', {'id':group.id}) }}" onclick="return confirm('Opravdu si přejete odstranit uživatelskou skupinu?');">Odstranit</a></td>
+                {% endif %}
             </tr>
         {% else %}
             <tr>
@@ -33,8 +45,12 @@
         <tr>
             <th>Název</th>
             <th>Čas odstranění</th>
-            <th>&nbsp;</th>
-            <th>&nbsp;</th>
+            {% if is_expr_granted("hasRole('ROLE_USER_GROUPS_CREATE')") %}
+                <th>&nbsp;</th>
+            {% endif %}
+            {% if is_expr_granted("hasRole('ROLE_USER_GROUPS_DELETE')") %}
+                <th>&nbsp;</th>
+            {% endif %}
         </tr>
     </table>
 {% endblock %}

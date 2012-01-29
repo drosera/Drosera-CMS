@@ -1,8 +1,10 @@
-parameters:
-    drosera_user.manager.user_manager.class: Drosera\UserBundle\Manager\UserManager 
+parameters: 
     drosera_user.entity.user.class: Drosera\UserBundle\Entity\User
-    drosera_user.manager.user_group_manager.class: Drosera\UserBundle\Manager\UserGroupManager 
     drosera_user.entity.user_group.class: Drosera\UserBundle\Entity\UserGroup
+    drosera_user.entity.credential.class: Drosera\UserBundle\Entity\Credential
+    drosera_user.manager.user_group_manager.class: Drosera\UserBundle\Manager\UserGroupManager
+    drosera_user.manager.user_manager.class: Drosera\UserBundle\Manager\UserManager
+    drosera_user.manager.credential_manager.class: Drosera\UserBundle\Manager\CredentialManager 
     drosera_user.validator.unique.class: Drosera\UserBundle\Validator\UniqueValidator
 
 services: 
@@ -13,6 +15,10 @@ services:
     drosera_user.repository.user_group_repository:
         parent: drosera_admin.repo
         arguments: [%drosera_user.entity.user_group.class%]
+        
+    drosera_user.repository.credential_repository:
+        parent: drosera_admin.repo
+        arguments: [%drosera_user.entity.credential.class%]
 
     drosera_user.user_manager:
         class: %drosera_user.manager.user_manager.class%
@@ -20,7 +26,11 @@ services:
     
     drosera_user.user_group_manager:
         class: %drosera_user.manager.user_group_manager.class%
-        arguments: [@drosera_user.repository.user_group_repository, @service_container, %drosera_user.entity.user_group.class%]
+        arguments: [@drosera_user.repository.user_group_repository, @service_container, %drosera_user.entity.user_group.class%]   
+
+    drosera_user.credential_manager:
+        class: %drosera_user.manager.credential_manager.class%
+        arguments: [@drosera_user.repository.credential_repository]
 
     drosera_user.validator.unique:
         class:      %drosera_user.validator.unique.class%

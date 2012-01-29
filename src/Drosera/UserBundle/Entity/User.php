@@ -148,19 +148,19 @@ class User implements UserInterface
 
         return array_unique($roles);
         */
-        
-        $roles = array();
-        $groupId = $this->getUserGroup()->getId();
-        
-        switch ($groupId) {
+
+        $roles = $this->getUserGroup()->getRoles();
+                
+        switch ($this->getUserGroup()->getId()) {
             case 1:
                 $roles[] = 'ROLE_SUPERADMIN';
+                //$roles[] = 'ROLE_IDDQD'; // obejde veskera prava
             case 2:
                 $roles[] = 'ROLE_ADMIN';
             default:
                 $roles[] = 'ROLE_USER';   
         }
-                    
+           
         return $roles;
     }
     
@@ -233,6 +233,17 @@ class User implements UserInterface
         if ($this->password !== $user->getPassword()) {
             return false;
         }
+        
+// zkurvenina a reload prav bez loginu        
+//        var_dump($this->getRoles() === $user->getRoles());
+//        var_dump($this->getRoles());
+//        var_dump($user->getRoles());
+//        
+//        //var_dump($user->getRoles());
+//        
+//        if ($this->getRoles() !== $user->getRoles()) {
+//            return false;
+//        }
         
         return true;
     }

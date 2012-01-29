@@ -32,5 +32,5 @@ security:
         - { path: ^/admin, roles: ROLE_ADMIN, requires_channel: https }
         #- { path: ^/_internal, roles: IS_AUTHENTICATED_ANONYMOUSLY, ip: 127.0.0.1 }
         
-    acl:
-        connection: default
+    #acl:
+    #    connection: default

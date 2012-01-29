@@ -5,4 +5,3 @@ services:
         factory_method:  getRepository
         class:           Doctrine\ORM\EntityRepository
         abstract:        true
-

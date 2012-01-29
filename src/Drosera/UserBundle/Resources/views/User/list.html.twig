@@ -10,15 +10,21 @@
     <div>
         {% render "DroseraUserBundle:User:filterMenu" %}
     </div>
-    <a href="{{ path('drosera_user_admin_user_create') }}">Vytvořit uživatele</a> 
+    {% if is_expr_granted("hasRole('ROLE_USERS_CREATE')") %}
+        <a href="{{ path('drosera_user_admin_user_create') }}">Vytvořit uživatele</a> 
+    {% endif %}
     <table>
         <tr>
             <th>Login</th>
             <th>Jméno</th>
             <th>E-mail</th>
             <th>Uživatelská skupina</th>
-            <th>&nbsp;</th>
-            <th>&nbsp;</th>
+            {% if is_expr_granted("hasRole('ROLE_USERS_EDIT')") %}
+                <th>&nbsp;</th>
+            {% endif %}
+            {% if is_expr_granted("hasRole('ROLE_USERS_DELETE')") %}
+                <th>&nbsp;</th>
+            {% endif %}
         </tr>
         {% for user in users %}
             <tr>
@@ -26,12 +32,16 @@
                 <td><a href="{{ path('drosera_user_admin_user_edit', {'id':user.id}) }}">{{ user.fullname }}</a></td>
                 <td>{{ user.email }}</td>
                 <td><a href="{{ path('drosera_user_admin_user_list', {'user_group':user.usergroup.id}) }}">{{ user.usergroup }}</a></td>
-                <td><a href="{{ path('drosera_user_admin_user_edit', {'id':user.id}) }}">Upravit</a></td>
-                <td>
-                    {% if loggedUser.id != user.id %}
-                        <a href="{{ path('drosera_user_admin_user_remove', {'id':user.id}) }}">Odstranit</a>
-                    {% endif %}    
-                </td>
+                {% if is_expr_granted("hasRole('ROLE_USERS_EDIT')") %}
+                    <td><a href="{{ path('drosera_user_admin_user_edit', {'id':user.id}) }}">Upravit</a></td>
+                {% endif %}
+                {% if is_expr_granted("hasRole('ROLE_USERS_DELETE')") %}
+                    <td>
+                        {% if loggedUser.id != user.id %}
+                            <a href="{{ path('drosera_user_admin_user_remove', {'id':user.id}) }}">Odstranit</a>
+                        {% endif %}    
+                    </td>
+                {% endif %}
             </tr>
         {% endfor %}
         <tr>
@@ -39,8 +49,12 @@
             <th>Jméno</th>
             <th>E-mail</th>
             <th>Uživatelská skupina</th>
-            <th>&nbsp;</th>
-            <th>&nbsp;</th>
+            {% if is_expr_granted("hasRole('ROLE_USERS_EDIT')") %}
+                <th>&nbsp;</th>
+            {% endif %}
+            {% if is_expr_granted("hasRole('ROLE_USERS_DELETE')") %}
+                <th>&nbsp;</th>
+            {% endif %}
         </tr>
     </table>
 {% endblock %}

@@ -28,7 +28,7 @@ class UserGroupRemoveType extends AbstractType
         $builder->add('user_group', 'entity', array(
             'class' => 'DroseraUserBundle:UserGroup',
             'query_builder' => function(EntityRepository $er) use ($userGroup, $withSuperadmin) {
-                return $er->getAllExceptOne($userGroup, false, $withSuperadmin, true);
+                return $er->getAllExceptOne($userGroup->getId(), false, $withSuperadmin, true);
             },
         ));
     }

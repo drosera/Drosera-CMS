@@ -8,10 +8,14 @@ use Symfony\Component\HttpFoundation\Request;
 use Drosera\UserBundle\Form\UserType;
 use Drosera\UserBundle\Form\UserRestoreType;
 
+use JMS\SecurityExtraBundle\Annotation\PreAuthorize;
 
 class UserController extends Controller
 {
     
+    /**
+     *  @PreAuthorize("hasRole('ROLE_USERS_VIEW')") 
+     */
     public function listAction()
     {
         $userGroupId = intval($this->get('request')->get('user_group')); 
@@ -26,6 +30,9 @@ class UserController extends Controller
         ));
     }
     
+    /**
+     *  @PreAuthorize("hasRole('ROLE_USERS_VIEW')") 
+     */
     public function trashAction()
     {
         $userManager = $this->get('drosera_user.user_manager');
@@ -36,6 +43,9 @@ class UserController extends Controller
         ));
     }
     
+    /**
+     *  @PreAuthorize("hasRole('ROLE_USERS_CREATE')") 
+     */
     public function createAction(Request $request)
     {
         $userManager = $this->get('drosera_user.user_manager');
@@ -59,6 +69,9 @@ class UserController extends Controller
         ));
     }
     
+    /**
+     *  @PreAuthorize("hasRole('ROLE_USERS_EDIT')") 
+     */
     public function editAction(Request $request)
     {
         $userManager = $this->get('drosera_user.user_manager');
@@ -83,6 +96,9 @@ class UserController extends Controller
         ));
     }
     
+    /**
+     *  @PreAuthorize("hasRole('ROLE_USERS_DELETE')") 
+     */
     public function emptyTrashAction()
     {
         $userManager = $this->get('drosera_user.user_manager');        
@@ -92,6 +108,9 @@ class UserController extends Controller
         return $this->redirect($this->generateUrl('drosera_user_admin_user_trash'));
     }
     
+    /**
+     *  @PreAuthorize("hasRole('ROLE_USERS_CREATE')") 
+     */
     public function preRestoreAction(Request $request)
     {
         $userManager = $this->get('drosera_user.user_manager');
@@ -137,6 +156,9 @@ class UserController extends Controller
         ));
     }
     
+    /**
+     *  @PreAuthorize("hasRole('ROLE_USERS_CREATE')") 
+     */
     public function restoreAction($id)
     {
         $userManager = $this->get('drosera_user.user_manager');
@@ -148,6 +170,9 @@ class UserController extends Controller
         return $this->redirect($this->generateUrl('drosera_user_admin_user_trash'));
     }
     
+    /**
+     *  @PreAuthorize("hasRole('ROLE_USERS_DELETE')") 
+     */
     public function removeAction($id)
     {
         $userManager = $this->get('drosera_user.user_manager');
@@ -159,6 +184,9 @@ class UserController extends Controller
         return $this->redirect($this->generateUrl('drosera_user_admin_user_list'));
     }
     
+    /**
+     *  @PreAuthorize("hasRole('ROLE_USERS_DELETE')") 
+     */
     public function deleteAction($id)
     {
         $userManager = $this->get('drosera_user.user_manager');
@@ -170,6 +198,9 @@ class UserController extends Controller
         return $this->redirect($this->generateUrl('drosera_user_admin_user_trash'));
     }
     
+    /**
+     *  @PreAuthorize("hasRole('ROLE_USERS_VIEW')") 
+     */
     public function filterMenuAction($withTrash = true)
     {
         $userManager = $this->get('drosera_user.user_manager');

@@ -31,6 +31,11 @@ class UserGroup
     protected $users;
     
     /**
+     * @ORM\OneToMany(targetEntity="Credential", mappedBy="user_group")
+     */
+    protected $credentials;
+    
+    /**
      * @ORM\Column(type="datetime") 
      */
     protected $time_created;
@@ -49,7 +54,9 @@ class UserGroup
     
     public function __construct()
     {
-      $this->users = new ArrayCollection();  
+        $this->users = new ArrayCollection();
+        $this->credentials = new ArrayCollection();
+        
     }
 
     public function __toString()
@@ -65,6 +72,30 @@ class UserGroup
     public function isAlive()
     {
         return $this->getTimeDeleted() === null && $this->getTimeTrashed() === null;
+    }
+    
+    public function getRoles()
+    {
+        $credentials = $this->getCredentials();
+        $roles = array();
+        
+        foreach ($credentials as $cred) {
+            $roles[] = 'ROLE_'.strtoupper($cred->getName());
+        }
+        
+        return $roles;
+    }
+    
+    public function getRolesAsName()
+    {
+        $credentials = $this->getCredentials();
+        $roles = array();
+        
+        foreach ($credentials as $cred) {
+            $roles[] = $cred->getName();
+        }
+        
+        return $roles;
     }
 
     /**
@@ -183,5 +214,25 @@ class UserGroup
     public function getTimeTrashed()
     {
         return $this->time_trashed;
+    }
+
+    /**
+     * Add credentials
+     *
+     * @param Drosera\UserBundle\Entity\Credential $credentials
+     */
+    public function addCredential(\Drosera\UserBundle\Entity\Credential $credentials)
+    {
+        $this->credentials[] = $credentials;
+    }
+
+    /**
+     * Get credentials
+     *
+     * @return Doctrine\Common\Collections\Collection 
+     */
+    public function getCredentials()
+    {
+        return $this->credentials;
     }
 }

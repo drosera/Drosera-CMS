@@ -234,17 +234,6 @@ class User implements UserInterface
             return false;
         }
         
-// zkurvenina a reload prav bez loginu        
-//        var_dump($this->getRoles() === $user->getRoles());
-//        var_dump($this->getRoles());
-//        var_dump($user->getRoles());
-//        
-//        //var_dump($user->getRoles());
-//        
-//        if ($this->getRoles() !== $user->getRoles()) {
-//            return false;
-//        }
-        
         return true;
     }
     

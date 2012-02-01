@@ -162,6 +162,7 @@ class UserGroupController extends Controller
                         $userManager->changeUserGroup($users, $data['user_group']);
                         break;
                     default:
+                        throw $this->createNotFoundException('Invalid operation!');
                         break;
                 }
                 

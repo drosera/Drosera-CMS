@@ -69,7 +69,10 @@ class UserGroupManager
     public function getById($id)
     {       
         $criteria = array('id' => intval($id), 'time_deleted' => null);
-        return $this->userGroupRepository->findOneBy($criteria); 
+        $userGroup = $this->userGroupRepository->findOneBy($criteria); 
+        if (!$userGroup)
+            throw new NotFoundHttpException(sprintf('No user group with id "%s" was found.', $id));
+        return $userGroup;
     }
     
     public function getAll()

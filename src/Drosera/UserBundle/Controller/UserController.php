@@ -36,7 +36,7 @@ class UserController extends Controller
     public function detailAction($id)
     {        
         $userManager = $this->get('drosera_user.user_manager');
-        $user = $userManager->getById($id);
+        $user = $userManager->getById($id);         
         
         return $this->render('DroseraUserBundle:User:detail.html.twig', array(
             'user' => $user,
@@ -153,6 +153,7 @@ class UserController extends Controller
                         $userManager->changeUserGroup(array($user), $data['user_group']);
                         break;
                     default:
+                        throw $this->createNotFoundException('Invalid operation!');
                         break;
                 }
                 

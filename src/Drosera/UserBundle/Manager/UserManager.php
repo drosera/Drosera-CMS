@@ -12,6 +12,7 @@ use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 use Symfony\Component\Validator\Constraint;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class UserManager implements UserProviderInterface 
 {
@@ -113,7 +114,10 @@ class UserManager implements UserProviderInterface
     public function getById($id)
     {       
         $criteria = array('id' => intval($id), 'time_deleted' => null);
-        return $this->userRepository->findOneBy($criteria); 
+        $user = $this->userRepository->findOneBy($criteria); 
+        if (!$user)
+            throw new NotFoundHttpException(sprintf('No user with id "%s" was found.', $id));
+        return $user;
     }
     
     public function updatePassword(UserInterface $user)

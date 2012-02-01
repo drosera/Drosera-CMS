@@ -1,0 +1,9 @@
+{% extends 'DroseraAdminBundle::layout.html.twig' %}
+
+{% block content %}
+    <h1>Detail uživatelské skupiny "{{ userGroup.name }}"</h1>
+    <table>
+        <tr><th>Jméno</th><td>{{ userGroup.name }}</td></tr>
+        <tr><th>Čas vytvoření</th><td>{{ userGroup.timeCreated | date("d.m.Y H:i:s") }}</td></tr>
+    </table>
+{% endblock %}

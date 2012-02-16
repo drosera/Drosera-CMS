@@ -1,4 +1,5 @@
 parameters: 
+    stof.entity.log_entry.class: Stof\DoctrineExtensionsBundle\Entity\LogEntry # presunout mimo UserBundle
     drosera_user.entity.user.class: Drosera\UserBundle\Entity\User
     drosera_user.entity.user_group.class: Drosera\UserBundle\Entity\UserGroup
     drosera_user.entity.credential.class: Drosera\UserBundle\Entity\Credential
@@ -8,6 +9,11 @@ parameters:
     drosera_user.validator.unique.class: Drosera\UserBundle\Validator\UniqueValidator
 
 services: 
+    # presunout mimo UserBundle
+    stof.repository.log_entry_repository:
+        parent: drosera_admin.repo
+        arguments: [%stof.entity.log_entry.class%]
+  
     drosera_user.repository.user_repository:
         parent: drosera_admin.repo
         arguments: [%drosera_user.entity.user.class%]
@@ -26,7 +32,7 @@ services:
     
     drosera_user.user_group_manager:
         class: %drosera_user.manager.user_group_manager.class%
-        arguments: [@drosera_user.repository.user_group_repository, @service_container, %drosera_user.entity.user_group.class%]   
+        arguments: [@drosera_user.repository.user_group_repository, @stof.repository.log_entry_repository, @service_container, %drosera_user.entity.user_group.class%]   
 
     drosera_user.credential_manager:
         class: %drosera_user.manager.credential_manager.class%

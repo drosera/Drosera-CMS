@@ -7,6 +7,13 @@ drosera_user_admin_user_group_detail:
     defaults: { _controller: DroseraUserBundle:UserGroup:detail }
     requirements:
         id:  \d+
+        
+drosera_user_admin_user_group_history_detail:
+    pattern:  /history/detail/{id}/{version}
+    defaults: { _controller: DroseraUserBundle:UserGroup:historyDetail }
+    requirements:
+        id:  \d+
+        version:  \d+
     
 drosera_user_admin_user_group_trash:
     pattern:  /trash

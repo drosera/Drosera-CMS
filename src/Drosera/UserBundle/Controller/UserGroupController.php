@@ -10,6 +10,8 @@ use Drosera\UserBundle\Form\UserGroupRemoveType;
 
 use JMS\SecurityExtraBundle\Annotation\PreAuthorize;
 
+use Gedmo\Loggable\Entity\LogEntry as LogEntry;
+
 class UserGroupController extends Controller
 {
     /**
@@ -221,4 +223,34 @@ class UserGroupController extends Controller
             'countTrashed' => $countTrashed,
         ));        
     } 
+    
+    /**
+     *  @PreAuthorize("hasRole('ROLE_USER_GROUPS_EDIT')") 
+     */
+    public function historyAction($id)
+    {
+        $userGroupManager = $this->get('drosera_user.user_group_manager');
+        $userGroup = $userGroupManager->getById($id);
+        $history = $userGroupManager->getHistoryEntries($userGroup);
+        
+        return $this->render('DroseraUserBundle:UserGroup:history.html.twig', array(
+            'userGroup' => $userGroup,
+            'history' => $history,
+        ));        
+    }
+    
+    /**
+     *  @PreAuthorize("hasRole('ROLE_USER_GROUPS_EDIT')") 
+     */
+    public function historyDetailAction($id, $version)
+    {
+        $userGroupManager = $this->get('drosera_user.user_group_manager');
+        $userGroup = $userGroupManager->getById($id);
+        $historyEntry = $userGroupManager->getHistoryEntry($userGroup, $version);
+        
+        return $this->render('DroseraUserBundle:UserGroup:historyDetail.html.twig', array(
+            'userGroup' => $userGroup,
+            'historyEntry' => $historyEntry,
+        ));        
+    }
 }

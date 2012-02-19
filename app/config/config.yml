@@ -73,3 +73,5 @@ stof_doctrine_extensions:
     orm:
         default:
             loggable: true
+    class:
+        loggable: Drosera\HistoryBundle\Listener\HistoryListener

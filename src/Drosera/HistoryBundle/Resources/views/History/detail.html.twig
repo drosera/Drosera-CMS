@@ -1,0 +1,10 @@
+<div>
+    <h1>Starší verze "{{ revertedEntity }}" (vytvorena {{ historyEntry.loggedAt | date("d.m.Y, H:i:s") }})</h1>
+    {% if (revertedEntity.className == "Drosera\\UserBundle\\Entity\\UserGroup") %}   
+        {% include "DroseraUserBundle:UserGroup:userGroup.html.twig" with {'userGroup': revertedEntity} %} 
+    {% elseif (revertedEntity.className == 'Drosera\\UserBundle\\Entity\\User') %}      
+        {% include "DroseraUserBundle:User:user.html.twig" with {'user': revertedEntity} %} 
+    {% endif %}
+</div>
+
+

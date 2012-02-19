@@ -4,20 +4,17 @@ namespace Drosera\UserBundle\Manager;
 
 use Drosera\UserBundle\Entity\UserGroup;
 use Drosera\UserBundle\Repository\UserGroupRepository;
-use Gedmo\Loggable\Entity\Repository\LogEntryRepository;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class UserGroupManager 
 {
     protected $userGroupRepository;
-    protected $historyRepository;
     protected $container;
     protected $class;
     
-    public function __construct(UserGroupRepository $userGroupRepository, LogEntryRepository $historyRepository, ContainerInterface $container, $class)
+    public function __construct(UserGroupRepository $userGroupRepository, ContainerInterface $container, $class)
     {
        $this->userGroupRepository = $userGroupRepository;
-       $this->historyRepository = $historyRepository;
        $this->container = $container; 
        $this->class = $class; 
     }
@@ -105,16 +102,5 @@ class UserGroupManager
     {
         $withSuperadmin = $this->container->get('security.context')->isGranted('ROLE_SUPERADMIN');
         return $this->userGroupRepository->getFilterMenu($withSuperadmin);
-    }
-    
-    public function getHistoryEntries(UserGroup $userGroup)
-    {
-        return $this->historyRepository->getLogEntries($userGroup);     
-    }
-    
-    public function getHistoryEntry(UserGroup $userGroup, $version)
-    {
-        $entries = $this->historyRepository->getLogEntries($userGroup); 
-        return $entries[0];
     }
 }

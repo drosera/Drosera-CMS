@@ -2,6 +2,7 @@
 namespace Drosera\UserBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 
@@ -10,6 +11,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
  * @ORM\HasLifecycleCallbacks() 
  * @ORM\Table(name="user")
  * @ORM\Entity(repositoryClass="Drosera\UserBundle\Repository\UserRepository")
+ * @Gedmo\Loggable(logEntryClass="Drosera\HistoryBundle\Entity\History")
  */
 class User implements UserInterface
 {
@@ -21,7 +23,8 @@ class User implements UserInterface
     protected $id;
     
     /**
-     * @ORM\Column(type="string", length="255", unique=true) 
+     * @ORM\Column(type="string", length="255", unique=true)
+     * @Gedmo\Versioned 
      */
     protected $username;
     
@@ -31,32 +34,38 @@ class User implements UserInterface
     protected $password;
     
     /**
-     * @ORM\Column(type="string", length="255", nullable=true) 
+     * @ORM\Column(type="string", length="255", nullable=true)
+     * @Gedmo\Versioned 
      */
     protected $degree_front;
     
     /**
      * @ORM\Column(type="string", length="255") 
+     * @Gedmo\Versioned
      */
     protected $firstname;
     
     /**
      * @ORM\Column(type="string", length="255") 
+     * @Gedmo\Versioned
      */
     protected $lastname;
     
     /**
-     * @ORM\Column(type="string", length="255", nullable=true) 
+     * @ORM\Column(type="string", length="255", nullable=true)
+     * @Gedmo\Versioned 
      */
     protected $degree_behind;
     
     /**
-     * @ORM\Column(type="string", length="255", unique=true) 
+     * @ORM\Column(type="string", length="255", unique=true)
+     * @Gedmo\Versioned 
      */
     protected $email;
     
     /**
-     * @ORM\Column(type="string", length="255", nullable=true) 
+     * @ORM\Column(type="string", length="255", nullable=true)
+     * @Gedmo\Versioned 
      */
     protected $telephone;
     
@@ -120,6 +129,11 @@ class User implements UserInterface
     public function setTimeCreatedValue()
     {
         $this->time_created = new \DateTime();
+    }
+    
+    public function getClassName()
+    {
+        return get_class($this);
     }
 
     public function __toString()

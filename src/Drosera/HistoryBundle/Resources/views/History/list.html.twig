@@ -1,0 +1,9 @@
+<div>
+    <h1>Starší verze</h1>
+    <ul>
+        {% for entry in historyEntries %}
+            <li><a href="{{ path('drosera_history_admin_history_detail', {'entryId' : entry.id}) }}">{{ entry.loggedAt | date("d.m.Y, H:i:s") }}</a> (upravil {{ entry.username }})</li>
+        {% endfor %}
+    </ul>    
+</div>
+

@@ -7,5 +7,5 @@
         <input type="submit" value="Upravit" />
     </form>
     
-    {% render "DroseraUserBundle:UserGroup:history" with {'id' : userGroup.id} %}
+    {% render "DroseraHistoryBundle:History:list" with {'entity' : userGroup} %}
 {% endblock %}

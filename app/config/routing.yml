@@ -1,3 +1,6 @@
+DroseraHistoryBundle:
+    resource: "@DroseraHistoryBundle/Resources/config/routing.yml"
+    prefix:   /admin/history
 
 drosera_user_admin:
     resource: "@DroseraUserBundle/Resources/config/routing.admin.yml"

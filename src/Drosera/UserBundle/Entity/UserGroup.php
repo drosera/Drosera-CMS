@@ -11,7 +11,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * @ORM\HasLifecycleCallbacks() 
  * @ORM\Entity(repositoryClass="Drosera\UserBundle\Repository\UserGroupRepository") 
  * @ORM\Table(name="user_group")
- * @Gedmo\Loggable
+ * @Gedmo\Loggable(logEntryClass="Drosera\HistoryBundle\Entity\History")
  */
 class UserGroup
 {
@@ -69,6 +69,11 @@ class UserGroup
     public function isSystem()
     {
         return $this->getId() <= 3;
+    }
+    
+    public function getClassName()
+    {
+        return get_class($this);
     }
     
     public function isAlive()

@@ -4,12 +4,14 @@ namespace Drosera\UserBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * @ORM\Entity
  * @ORM\HasLifecycleCallbacks() 
  * @ORM\Entity(repositoryClass="Drosera\UserBundle\Repository\UserGroupRepository") 
  * @ORM\Table(name="user_group")
+ * @Gedmo\Loggable(logEntryClass="Drosera\HistoryBundle\Entity\History")
  */
 class UserGroup
 {
@@ -21,6 +23,7 @@ class UserGroup
     protected $id;
     
     /**
+     * @Gedmo\Versioned
      * @ORM\Column(type="string", length="255", unique=true) 
      */
     protected $name;
@@ -44,7 +47,6 @@ class UserGroup
      * @ORM\Column(type="datetime", nullable=true) 
      */
     protected $time_trashed;
-
     
     /**
      * @ORM\Column(type="datetime", nullable=true) 
@@ -67,6 +69,11 @@ class UserGroup
     public function isSystem()
     {
         return $this->getId() <= 3;
+    }
+    
+    public function getClassName()
+    {
+        return get_class($this);
     }
     
     public function isAlive()

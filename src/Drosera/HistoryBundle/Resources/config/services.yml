@@ -1,0 +1,15 @@
+parameters:
+    drosera_history.entity.history.class: Drosera\HistoryBundle\Entity\History
+    drosera_history.manager.history.class: Drosera\HistoryBundle\Manager\HistoryManager
+
+services:
+    drosera_history.repository.history:
+        parent: drosera_admin.repo
+        arguments: [%drosera_history.entity.history.class%]
+        
+    drosera_history.manager.history:
+        class: %drosera_history.manager.history.class%
+        arguments: [@drosera_history.repository.history, @doctrine.orm.entity_manager]
+
+    
+    

@@ -7,7 +7,7 @@ parameters:
     drosera_user.manager.credential_manager.class: Drosera\UserBundle\Manager\CredentialManager 
     drosera_user.validator.unique.class: Drosera\UserBundle\Validator\UniqueValidator
 
-services: 
+services:   
     drosera_user.repository.user_repository:
         parent: drosera_admin.repo
         arguments: [%drosera_user.entity.user.class%]

@@ -2,13 +2,5 @@
 
 {% block content %}
     <h1>Detail uživatele "{{ user.username }}"</h1>
-    <table>
-        <tr><th>Login</th><td>{{ user.username }}</td></tr>
-        <tr><th>Jméno</th><td>{{ user.fullname }}</td></tr>
-        <tr><th>E-mail</th><td>{{ user.email }}</td></tr>
-        <tr><th>Telefon</th><td>{% if user.telephone %}{{ user.telephone }}{% else %}<em>nezadán</em>{% endif %}</td></tr>
-        <tr><th>Aktivní</th><td>{% if user.active %}ano{% else %}ne{% endif %}</td></tr> 
-        <tr><th>Uživatelská skupina</th><td>{{ user.getUserGroup.name }}</td></tr>
-        <tr><th>Čas vytvoření</th><td>{{ user.timeCreated | date("d.m.Y H:i:s") }}</td></tr>
-    </table>
+    {% include "DroseraUserBundle:User:user.html.twig" with {'user': user} %} 
 {% endblock %}

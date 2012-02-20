@@ -10,6 +10,8 @@ use Drosera\UserBundle\Form\UserGroupRemoveType;
 
 use JMS\SecurityExtraBundle\Annotation\PreAuthorize;
 
+use Gedmo\Loggable\Entity\LogEntry as LogEntry;
+
 class UserGroupController extends Controller
 {
     /**

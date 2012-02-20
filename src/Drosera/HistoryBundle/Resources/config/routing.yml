@@ -1,0 +1,11 @@
+drosera_history_admin_history_detail:
+    pattern:  /detail/{entryId}
+    defaults: { _controller: DroseraHistoryBundle:History:detail }
+    requirements:
+        entryId:  \d+
+        
+drosera_history_admin_history_revert:
+    pattern:  /revert/{entryId}
+    defaults: { _controller: DroseraHistoryBundle:History:revert }
+    requirements:
+        entryId:  \d+

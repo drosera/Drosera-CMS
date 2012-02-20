@@ -6,4 +6,6 @@
         {{ form_widget(form) }}
         <input type="submit" value="Upravit" />
     </form>
+    
+    {% render "DroseraHistoryBundle:History:list" with {'entity' : userGroup} %}
 {% endblock %}

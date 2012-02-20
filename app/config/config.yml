@@ -58,6 +58,7 @@ swiftmailer:
     username:  %mailer_user%
     password:  %mailer_password%
 
+# Action roles check via annotations
 jms_security_extra:
     secure_all_services: false
     enable_iddqd_attribute: true
@@ -65,3 +66,12 @@ jms_security_extra:
     
 jms_aop:
     cache_dir: %kernel.cache_dir%/jms_aop
+ 
+# DoctrineExtensions Configuration    
+stof_doctrine_extensions:
+    default_locale: %locale%
+    orm:
+        default:
+            loggable: true
+    class:
+        loggable: Drosera\HistoryBundle\Listener\HistoryListener

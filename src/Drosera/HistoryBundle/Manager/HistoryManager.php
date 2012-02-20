@@ -27,11 +27,16 @@ class HistoryManager
         return $this->historyRepository->find($id); 
     }
     
-    public function getEntityVersion(History $history)
+    public function getEntityVersion(History $history, $andFlush = false)
     {
         $entity = $this->em->find($history->getObjectClass(), $history->getObjectId());
         $this->historyRepository->revert($entity, $history->getVersion());
 
+        if ($andFlush) {
+            $this->em->persist($entity);
+            $this->em->flush();
+        }
+        
         return $entity;
     }
 }

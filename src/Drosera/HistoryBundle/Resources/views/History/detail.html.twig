@@ -1,10 +1,17 @@
 <div>
     <h1>Starší verze "{{ revertedEntity }}" (vytvorena {{ historyEntry.loggedAt | date("d.m.Y, H:i:s") }})</h1>
+    {% if app.session.hasFlash('success') %}
+        <div>
+            {{ app.session.flash('success') }}
+        </div>
+    {% endif %}
+    <a href="{{ path('drosera_history_admin_history_revert', {'entryId' : historyEntry.id}) }}" onclick="return confirm('Opravdu si přejete obnovit tuto verzi?')">Obnovit</a>
+    
     {% if (revertedEntity.className == "Drosera\\UserBundle\\Entity\\UserGroup") %}   
         {% include "DroseraUserBundle:UserGroup:userGroup.html.twig" with {'userGroup': revertedEntity} %} 
     {% elseif (revertedEntity.className == 'Drosera\\UserBundle\\Entity\\User') %}      
         {% include "DroseraUserBundle:User:user.html.twig" with {'user': revertedEntity} %} 
-    {% endif %}
+    {% endif %}   
 </div>
 
 

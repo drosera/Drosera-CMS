@@ -29,4 +29,16 @@ class HistoryController extends Controller
             'revertedEntity' => $revertedEntity,
         ));        
     }
+    
+    public function revertAction($entryId)
+    {        
+        $historyManager = $this->get('drosera_history.manager.history');
+        $historyEntry = $historyManager->getEntryById($entryId);       
+        $revertedEntity = $historyManager->getEntityVersion($historyEntry, true);
+
+        $this->get('session')->setFlash('success', 'Starší verze byla úspěšně obnovena.');  
+        return $this->redirect($this->generateUrl('drosera_history_admin_history_detail', array(
+            'entryId' => $entryId,
+        )));       
+    }
 }

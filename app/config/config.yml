@@ -75,3 +75,6 @@ stof_doctrine_extensions:
             loggable: true
     class:
         loggable: Drosera\HistoryBundle\Listener\HistoryListener
+        
+doctrine_migrations:
+    dir_name: "%kernel.root_dir%/../db/patches"
